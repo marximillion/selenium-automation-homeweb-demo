@@ -11,11 +11,11 @@ async function main() {
 
         // 1.1: EN
         const header_en = new Header('en');
-        await header_en.run();
+        await header_en.runTests();
 
         // 1.2: FR
         const header_fr = new Header('fr');
-        await header_fr.run();
+        await header_fr.runTests();
     }
     catch (error: any) {
         console.error('MAIN->onFailure', error);

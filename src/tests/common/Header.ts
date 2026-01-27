@@ -1,8 +1,11 @@
 import { appendFile } from 'node:fs/promises';
 import { Browser, Builder, By, WebDriver } from 'selenium-webdriver';
 import { CLICK_DELAY, HEADER, HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR } from '../../Constants';
-import { generateSummary, generateLogFileName } from '../../utility/Utility';
+import { generateSummary, generateLogFileName } from '../../Utility';
 
+/**
+ * Header
+ */
 export class Header {
     /**
      * Member Variables
@@ -51,7 +54,7 @@ export class Header {
     }
 
     // TODO: FR tests
-    public async run() {
+    public async runTests() {
 
         let LABEL_LOGO = '';
         let LABEL_TOGGLE = '';
@@ -67,26 +70,25 @@ export class Header {
                 LABEL_LOGO = HEADER.EN_LOGO;
                 LABEL_TOGGLE = HEADER.EN_TOGGLE;
                 LABEL_BUTTON = HEADER.EN_BUTTON;
-                ID_LOGO = 'HEADER-ANON-EN-001';
-                ID_TOGGLE = 'HEADER-ANON-EN-002';
-                ID_BUTTON = 'HEADER-ANON-EN-003';
+                ID_LOGO = 'HEADER-ANON-EN-002';
+                ID_TOGGLE = 'HEADER-ANON-EN-003';
+                ID_BUTTON = 'HEADER-ANON-EN-004';
                 break;
             case 'fr':
                 this.targetURL = HOMEWEB_LANDING_URL_FR;
                 LABEL_LOGO = HEADER.FR_LOGO;
                 LABEL_TOGGLE = HEADER.FR_TOGGLE;
                 LABEL_BUTTON = HEADER.FR_BUTTON;
-                ID_LOGO = 'HEADER-ANON-FR-001';
-                ID_TOGGLE = 'HEADER-ANON-FR-002';
-                ID_BUTTON = 'HEADER-ANON-FR-003';
+                ID_LOGO = 'HEADER-ANON-FR-002';
+                ID_TOGGLE = 'HEADER-ANON-FR-003';
+                ID_BUTTON = 'HEADER-ANON-FR-004';
                 break;
         }
 
         this.startTime = Date.now();
         try {
-            await this.chromeDriver.get(this.targetURL);
-            const message = `TEST::${this.targetURL}\n`
-            await appendFile(this.logFilename, message);
+            const startMessage = `Header::run::targetURL->${this.targetURL}\n`
+            await appendFile(this.logFilename, startMessage);
 
             await this.chromeDriver.sleep(CLICK_DELAY);
             await this.runStep(
@@ -109,7 +111,7 @@ export class Header {
             await this.chromeDriver.sleep(CLICK_DELAY);
             await this.finish();
         } catch (error: any) {
-            await appendFile(this.logFilename, `HEADER::ERROR->${error}\n`);
+            await appendFile(this.logFilename, `Header::error->${error}\n`);
             await this.chromeDriver.quit();
         }
     }
