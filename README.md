@@ -7,7 +7,12 @@ MDG Test Automation
 - Google Chrome Version 144.0.7559.97
 - ChromeDriver 144.0.7559.96
 
-> # Install Instructions
+> # Install Instruction
 > 1. In terminal, navigate to project root directory
 > 2. Run *yarn install*
-> 3. Run *npx ts-node <PROJECT_ROOT>/tests/common/header.ts*
+> ---
+> #### HEADER
+> - Run *yarn header*
+> ---
+> #### LANDING 
+> - WIP
