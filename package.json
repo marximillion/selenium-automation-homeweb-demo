@@ -2,14 +2,14 @@
   "name": "selenium-automation-demo",
   "version": "1.0.0",
   "main": "index.ts",
-  "license": "MIT",
+  "private": true,
   "dependencies": {
     "selenium-webdriver": "^4.40.0"
   },
   "scripts": {
-    "header": "npx ts-node /opt/sandbox/selenium-automation-demo/tests/common/header"
+    "header-en": "npx ts-node /opt/sandbox/selenium-automation-demo/src/tests/common/header/header-anon-en",
+    "smoke": "npx ts-node /opt/sandbox/selenium-automation-demo/src/tests/smoke"
   },
-  "type": "module",
   "devDependencies": {
     "@types/selenium-webdriver": "^4.35.5",
     "ts-node": "^10.9.2",

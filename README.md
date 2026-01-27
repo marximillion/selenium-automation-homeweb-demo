@@ -11,11 +11,9 @@ MDG Test Automation
 > 1. In terminal, navigate to project root directory
 > 2. Run *yarn install*
 > ---
-> #### HEADER
-> - Run *yarn header*
+> #### SMOKE
+> - Run *yarn smoke*
+> - [WIP] - HEADER - EN
 > ---
-> #### FOOTER 
-> - WIP
-> --- 
-> #### LANDING
+> #### REGRESSION 
 > - NEXT
