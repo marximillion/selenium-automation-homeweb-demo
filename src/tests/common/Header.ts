@@ -12,12 +12,12 @@ export class Header {
      */
     private chromeDriver: WebDriver;
     private readonly logFilename: string;
-    public readonly totalTests: number;
     private readonly targetURL: string;
 
     private startTime: number;
-    public passCounter: number;
-    public failCounter: number;
+    public testTotal: number;
+    public passed: number;
+    public failed: number;
 
     private readonly LABEL_LOGO: string;
     private readonly LABEL_TOGGLE: string;
@@ -33,12 +33,12 @@ export class Header {
         console.log('Header::constructor()');
         this.chromeDriver = driver;
         this.logFilename = generateLogFileName(`header-${locale}`);
-        this.totalTests = 3; // TODO: Calculate instead of hard code
         this.targetURL = target;
 
+        this.testTotal = 0;
         this.startTime = 0;
-        this.passCounter = 0;
-        this.failCounter = 0;
+        this.passed = 0;
+        this.failed = 0;
 
         switch (locale) {
             case 'fr':
@@ -76,19 +76,21 @@ export class Header {
             const element = await this.chromeDriver.findElement(By.css(cssSelector));
             await element.click();
 
-            const success_message = `${stepCode}->success`;
+            const success_message = `${stepCode}->success\n`;
             console.log(success_message);
             await appendFile(this.logFilename, success_message);
-            this.passCounter += 1;
-        } catch (error: any) {
-            const fail_message = `${stepCode}->onFailure ${error}`;
+            this.passed += 1;
+        }
+        catch (error: any) {
+            const fail_message = `${stepCode}->onFailure ${error}\n`;
             console.log(fail_message);
             await appendFile(this.logFilename, fail_message);
-            this.failCounter += 1;
-        } finally {
-            // Reset page to original target
+            this.failed += 1;
+        }
+        finally {
+            this.testTotal += 1;
             console.log(`${stepCode}->END`);
-            await this.chromeDriver.get(this.targetURL);
+            await this.reset();
         }
     }// End of runStep()
 
@@ -128,14 +130,21 @@ export class Header {
         const totalTime = endTime - this.startTime;
 
         const summary = generateSummary(
-            this.totalTests,
-            this.passCounter,
-            this.failCounter,
+            this.testTotal,
+            this.passed,
+            this.failed,
             totalTime
         );
 
         console.log('Header::finish')
         await appendFile(this.logFilename, summary);
     }// End of finish()
+
+    private async reset() {
+        await this.chromeDriver.get(this.targetURL);
+        await this.chromeDriver.executeScript(
+            'window.scrollTo(0, 0);'
+        );
+    }
 }// End of class
 // End of file
