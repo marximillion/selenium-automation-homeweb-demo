@@ -45,5 +45,5 @@ export function generateSummary(total: number, pass: number, fail: number, time:
 }
 
 export function generateReport(total: number, pass: number, fail: number) {
-    return `\nREPORT\nTOTAL: ${total}\nPASS: ${pass}\nFAIL: ${fail}\n\n`
+    return `\nREPORT\nTOTAL: ${total}\nPASS: ${pass}\nFAIL: ${fail}\n`
 }
