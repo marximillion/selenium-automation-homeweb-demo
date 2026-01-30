@@ -4,6 +4,7 @@
   "main": "index.ts",
   "private": true,
   "dependencies": {
+    "i18n-js": "^4.5.1",
     "selenium-webdriver": "^4.40.0"
   },
   "scripts": {
