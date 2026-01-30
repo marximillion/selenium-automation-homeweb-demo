@@ -48,8 +48,8 @@ async function Smoke() {
         await header_en.runTests();
 
         // 3.3: Footer
-        // const footer_en = new Footer(LANGUAGE.ENGLISH, chromeDriver, TARGET_URL_EN, windowHandle);
-        // await footer_en.runTests();
+        const footer_en = new Footer(LANGUAGE.ENGLISH, chromeDriver, TARGET_URL_EN, windowHandle);
+        await footer_en.runTests();
 
         /**
          * 4: FR Tests
@@ -62,15 +62,15 @@ async function Smoke() {
         await header_fr.runTests();
 
         // 4.3: Footer
-        // const footer_fr = new Footer(LANGUAGE.FRENCH, chromeDriver, TARGET_URL_FR, windowHandle);
-        // await footer_fr.runTests();
+        const footer_fr = new Footer(LANGUAGE.FRENCH, chromeDriver, TARGET_URL_FR, windowHandle);
+        await footer_fr.runTests();
 
         /**
          * 5: Generate Report
          */
-        const total = header_en.testTotal + header_fr.testTotal;
-        const pass = header_en.passed + header_fr.passed;
-        const fail = header_en.failed + header_fr.failed
+        const total = header_en.testTotal + header_fr.testTotal + footer_en.testTotal + footer_fr.testTotal;
+        const pass = header_en.passed + header_fr.passed + footer_en.passed + footer_fr.passed;
+        const fail = header_en.failed + header_fr.failed + footer_en.failed + footer_fr.failed;
         console.log(generateReport(total, pass, fail))
     }
     catch (error: any) {
