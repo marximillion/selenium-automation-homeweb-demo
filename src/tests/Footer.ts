@@ -6,7 +6,7 @@
 import { appendFile } from 'node:fs/promises';
 import { BaseTest } from './BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
-import { CLICK_DELAY, TAG, LANGUAGE, HOMEWEB_DOMAIN, HOMEWOOD_DOMAIN } from '../common/Constants';
+import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_DOMAIN, LANGUAGE, TAG } from '../common/Constants';
 import { ElementType } from '../types/ElementType';
 import { generateSummary, translate } from '../common/Utility';
 
@@ -28,8 +28,6 @@ export class Footer extends BaseTest {
      * Member Variables
      */
     private readonly FOOTER: FooterElements;
-    private windowHandles: string[];
-    // private newTab: string;
 
     /**
      * Constructor
@@ -63,9 +61,7 @@ export class Footer extends BaseTest {
                 identifier: translate('footer_identifier_terms'),
                 route: translate('footer_route_terms')
             }
-        }
-
-        this.windowHandles = [];
+        };
     }// End of constructor()
 
     /**
@@ -87,21 +83,20 @@ export class Footer extends BaseTest {
 
             /**
              * 3: Validate click
-             * TODO: Reverse logic. do fail case first!!
              */
             // 3.1: Set up clicked URL
             url = new URL(await this.chromeDriver.getCurrentUrl());
 
             // 3.2: Check if new tab was opened
-            const handles = await this.chromeDriver.getAllWindowHandles()
+            const handles = await this.chromeDriver.getAllWindowHandles();
             if (handles.length > 1) {
                 // 3.2.1: New tab opened, remain on new tab
                 await this.chromeDriver.switchTo().window( handles[handles.length - 1] );
 
                 // 3.2.2: Interrogate new tab URL
-                url = new URL(await this.chromeDriver.getCurrentUrl());
-                if (url.origin === HOMEWOOD_DOMAIN) {
-                    if (url.pathname === route) {
+                const new_tab_url = new URL(await this.chromeDriver.getCurrentUrl());
+                if (new_tab_url.origin === HOMEWOOD_DOMAIN) {
+                    if (new_tab_url.pathname === route) {
                         // 3.2.3: Test - Pass (close new tab)
                         this.passed += 1;
                         const success_message = `${id}->success\n`;
@@ -120,13 +115,10 @@ export class Footer extends BaseTest {
                         const success_message = `${id}->success\n`;
                         await appendFile(this.logFilename, success_message);
                     }
-                    else {
-                        throw new Error('UNKNOWN PATH')
-                    }
                 }
-                // 3.6: Domain Check - UNKNOWN
+                // 3.5: Domain Check - UNKNOWN
                 else {
-                    throw new Error('UNKNOWN ORIGIN')
+                    throw new Error('UNKNOWN ORIGIN');
                 }
             }
 
@@ -142,7 +134,7 @@ export class Footer extends BaseTest {
             // 5: Reset browser state
             this.testTotal += 1;
             console.log(`${id}->END`);
-            await this.reset()
+            await this.reset();
         }
     }// End of runStep()
 
@@ -150,8 +142,8 @@ export class Footer extends BaseTest {
      * Action: Run Footer Tests
      */
     public async runTests() {
-        const startMessage = `Footer::runTests::targetURL->${this.targetURL}\n`
-        console.log(startMessage)
+        const startMessage = `Footer::runTests::targetURL->${this.targetURL}\n`;
+        console.log(startMessage);
         this.startTime = Date.now();
 
         try {
@@ -178,7 +170,7 @@ export class Footer extends BaseTest {
             await this.finish();
         } catch (error: any) {
             const fail_message = `Footer::runTests->onFailure\n${error}\n`;
-            console.log(fail_message)
+            console.log(fail_message);
             await appendFile(this.logFilename, fail_message);
         }
     }// End of runTests()
@@ -200,28 +192,41 @@ export class Footer extends BaseTest {
             totalTime
         );
 
-        // 2: Log results
-        console.log('Footer::finish')
-        await appendFile(this.logFilename, summary);
-    }// End of finish()
+        try {
+            // 2: Log results
+            console.log('Footer::finish\n');
+            await appendFile(this.logFilename, summary);
+        }
+        catch (error: any) {
+            const fail_message = `Footer::finish->onFailure\n${error}\n`;
+            console.log(fail_message);
+            await appendFile(this.logFilename, fail_message);
+        }
+     }// End of finish()
 
     /**
      * Reset - Browser State
-     * TODO: try catch
      */
     private async reset() {
-        // 1: Check to ensure browser is looking at the correct window
-        if ( this.originalWindow ) {
-            await this.chromeDriver.switchTo().window( this.originalWindow );
+        try {
+            // 1: Check to ensure browser is looking at the correct window
+            if ( this.originalWindow ) {
+                await this.chromeDriver.switchTo().window( this.originalWindow );
+            }
+
+            // 2: Navigate back to initial target
+            await this.chromeDriver.get(this.targetURL);
+
+            // 3: Scroll to the bottom of the page
+            await this.chromeDriver.executeScript(
+                'window.scrollTo(0, document.body.scrollHeight);'
+            );
         }
-
-        // 2: Navigate back to initial target
-        await this.chromeDriver.get(this.targetURL);
-
-        // 3: Scroll to the bottom of the page
-        await this.chromeDriver.executeScript(
-            'window.scrollTo(0, document.body.scrollHeight);'
-        );
+        catch (error: any) {
+            const fail_message = `Footer::reset->onFailure\n${error}\n`;
+            console.log(fail_message);
+            await appendFile(this.logFilename, fail_message);
+        }
     }// End of reset()
 }// End of class
 // End of file

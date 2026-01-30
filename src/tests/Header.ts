@@ -53,9 +53,9 @@ export class Header extends BaseTest {
             button: {
                 id: translate('header_id_button'),
                 identifier: translate('header_identifier_button'),
-                route: translate('header_route_button')
+                route: translate('header_route_button');
             }
-        }
+        };
     }// End of constructor()
 
     /**
@@ -98,7 +98,7 @@ export class Header extends BaseTest {
             }
             // 3.3: Domain Check - UNKNOWN
             else {
-                throw new Error('UNKNOWN ORIGIN')
+                throw new Error('UNKNOWN ORIGIN');
             }
         }
         catch (error: any) {
@@ -120,8 +120,8 @@ export class Header extends BaseTest {
      * Action: Run Header Tests
      */
     public async runTests() {
-        const startMessage = `Header::runTests::targetURL->${this.targetURL}\n`
-        console.log(startMessage)
+        const startMessage = `Header::runTests::targetURL->${this.targetURL}\n`;
+        console.log(startMessage);
         this.startTime = Date.now();
 
         try {
@@ -148,7 +148,7 @@ export class Header extends BaseTest {
 
         } catch (error: any) {
             const fail_message = `Header::runTests->onFailure\n${error}\n`;
-            console.log(fail_message)
+            console.log(fail_message);
             await appendFile(this.logFilename, fail_message);
         }
     }// End of runTests()
@@ -156,7 +156,6 @@ export class Header extends BaseTest {
     /**
      * Action: Finish Tests
      * Set up statistics and results for logging
-     * TODO: try catch
      */
     private async finish() {
         const endTime = Date.now();
@@ -170,28 +169,41 @@ export class Header extends BaseTest {
             totalTime
         );
 
+        try {
+            console.log('Header::finish\n');
+            await appendFile(this.logFilename, summary);
+        }
+        catch (error: any) {
+            const fail_message = `Header::finish->onFailure\n${error}\n`;
+            console.log(fail_message);
+            await appendFile(this.logFilename, fail_message);
+        }
         // 2: Log results
-        console.log('Header::finish\n')
-        await appendFile(this.logFilename, summary);
     }// End of finish()
 
     /**
      * Action: Reset - Browser State
-     * TODO: try catch
      */
     private async reset() {
-        // 1: Check to ensure browser is looking at the correct window
-        if ( this.originalWindow ) {
-            await this.chromeDriver.switchTo().window( this.originalWindow );
+        try {
+            // 1: Check to ensure browser is looking at the correct window
+            if ( this.originalWindow ) {
+                await this.chromeDriver.switchTo().window( this.originalWindow );
+            }
+
+            // 2: Navigate back to initial target
+            await this.chromeDriver.get( this.targetURL );
+
+            // 3: Scroll to the top of the page
+            await this.chromeDriver.executeScript(
+                'window.scrollTo(0, 0);'
+            );
         }
-
-        // 2: Navigate back to initial target
-        await this.chromeDriver.get( this.targetURL );
-
-        // 3: Scroll to the top of the page
-        await this.chromeDriver.executeScript(
-            'window.scrollTo(0, 0);'
-        );
+        catch (error: any) {
+            const fail_message = `Header::reset->onFailure\n${error}\n`;
+            console.log(fail_message);
+            await appendFile(this.logFilename, fail_message);
+        }
     }// End of reset()
 }// End of class
 // End of file
