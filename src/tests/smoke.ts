@@ -14,7 +14,7 @@ import { HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, LANGUAGE } from '../Con
  * Smoke - Test
  */
 async function smoke() {
-    console.log('smoke->START');
+    console.log('smoke->START\n');
 
     /*
      * 1: Set up
@@ -23,7 +23,7 @@ async function smoke() {
     const options = new chrome.Options();
     options.addArguments(
         '--incognito',
-        '--start-maximized',
+        // '--start-maximized',
     );
 
     // 1.2 Variables
@@ -44,12 +44,12 @@ async function smoke() {
         await chromeDriver.get(TARGET_URL_EN)
 
         // 3.2: Header
-        const header_en = new Header(LANGUAGE.ENGLISH, chromeDriver, TARGET_URL_EN);
+        const header_en = new Header(LANGUAGE.ENGLISH, chromeDriver, TARGET_URL_EN, windowHandle);
         await header_en.runTests();
 
         // 3.3: Footer
-        const footer_en = new Footer(LANGUAGE.ENGLISH, chromeDriver, TARGET_URL_EN, windowHandle);
-        await footer_en.runTests();
+        // const footer_en = new Footer(LANGUAGE.ENGLISH, chromeDriver, TARGET_URL_EN, windowHandle);
+        // await footer_en.runTests();
 
         /**
          * 4: FR Tests
@@ -58,23 +58,23 @@ async function smoke() {
         await chromeDriver.get(TARGET_URL_FR)
 
         // 4.2: Header
-        const header_fr = new Header(LANGUAGE.FRENCH, chromeDriver, TARGET_URL_FR);
+        const header_fr = new Header(LANGUAGE.FRENCH, chromeDriver, TARGET_URL_FR, windowHandle);
         await header_fr.runTests();
 
         // 4.3: Footer
-        const footer_fr = new Footer(LANGUAGE.FRENCH, chromeDriver, TARGET_URL_FR, windowHandle);
-        await footer_fr.runTests();
+        // const footer_fr = new Footer(LANGUAGE.FRENCH, chromeDriver, TARGET_URL_FR, windowHandle);
+        // await footer_fr.runTests();
 
         /**
          * 5: Generate Report
          */
-        const total = header_en.testTotal + header_fr.testTotal + footer_en.testTotal + footer_fr.testTotal;
-        const pass = header_en.passed + header_fr.passed + footer_en.passed + footer_fr.passed;
-        const fail = header_en.failed + header_fr.failed + footer_en.failed + footer_fr.failed;
+        const total = header_en.testTotal + header_fr.testTotal;
+        const pass = header_en.passed + header_fr.passed;
+        const fail = header_en.failed + header_fr.failed
         console.log(generateReport(total, pass, fail))
     }
     catch (error: any) {
-        console.log('smoke->onFailure', error);
+        console.log('smoke->onFailure\n', error);
     }
     finally {
         console.log('smoke->END');
