@@ -4,11 +4,11 @@
  * Imports
  */
 import { appendFile } from 'node:fs/promises';
-import { BaseTest } from './BaseTest';
+import { BaseTest } from '../BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
-import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_API_DOMAIN, LANGUAGE, TAG } from '../common/Constants';
-import { ElementType } from '../types/ElementType';
-import { generateSummary, translate } from '../common/Utility';
+import { CLICK_DELAY, HOMEWEB_DOMAIN, LANGUAGE, QUANTUM_API_DOMAIN, TAG } from '../../common/Constants';
+import { ElementType } from '../../types/ElementType';
+import { generateSummary, translate } from '../../common/Utility';
 
 /**
  * Interface
@@ -20,7 +20,7 @@ interface HeaderElements {
 }
 
 /**
- * Header Tests
+ * Header - Anonymous Tests
  */
 export class Header extends BaseTest {
     /**
@@ -88,8 +88,8 @@ export class Header extends BaseTest {
                     await appendFile(this.logFilename, success_message);
                 }
             }
-            // 3.2: Domain Check - Homewood API
-            else if (url.origin === HOMEWOOD_API_DOMAIN) {
+            // 3.2: Domain Check - Quantum API
+            else if (url.origin === QUANTUM_API_DOMAIN) {
                 if ( url.pathname === route ) {
                     this.passed += 1;
                     const success_message = `${id}->success\n`;

@@ -4,24 +4,24 @@
  * Imports
  */
 import { appendFile } from 'node:fs/promises';
-import { BaseTest } from './BaseTest';
+import { BaseTest } from '../BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
-import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_DOMAIN, LANGUAGE, TAG } from '../common/Constants';
-import { ElementType } from '../types/ElementType';
-import { generateSummary, translate } from '../common/Utility';
+import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_DOMAIN, LANGUAGE, TAG } from '../../common/Constants';
+import { ElementType } from '../../types/ElementType';
+import { generateSummary, translate } from '../../common/Utility';
 
 /**
  * Interface
  */
 interface FooterElements {
     about: ElementType,
-    accessibility: ElementType
-    privacy: ElementType,
     terms: ElementType,
+    privacy: ElementType,
+    accessibility: ElementType
 }
 
 /**
- * Footer Tests
+ * Footer - Anonymous Tests
  */
 export class Footer extends BaseTest {
     /**
@@ -46,20 +46,20 @@ export class Footer extends BaseTest {
                 identifier: translate('footer_identifier_about'),
                 route: translate('footer_route_about')
             },
-            accessibility: {
-                id: translate('footer_id_accessibility'),
-                identifier: translate('footer_identifier_accessibility'),
-                route: translate('footer_route_accessibility')
+            terms: {
+                id: translate('footer_id_terms'),
+                identifier: translate('footer_identifier_terms'),
+                route: translate('footer_route_terms')
             },
             privacy: {
                 id: translate('footer_id_privacy'),
                 identifier: translate('footer_identifier_privacy'),
                 route: translate('footer_route_privacy')
             },
-            terms: {
-                id: translate('footer_id_terms'),
-                identifier: translate('footer_identifier_terms'),
-                route: translate('footer_route_terms')
+            accessibility: {
+                id: translate('footer_id_accessibility'),
+                identifier: translate('footer_identifier_accessibility'),
+                route: translate('footer_route_accessibility')
             }
         };
     }// End of constructor()
@@ -109,7 +109,7 @@ export class Footer extends BaseTest {
             else {
                 // 3.4: Domain Check - Homeweb
                 if (url.origin === HOMEWEB_DOMAIN) {
-                    if (url.pathname == route) {
+                    if (url.pathname === route) {
                         // 3.5: Test - Pass
                         this.passed += 1;
                         const success_message = `${id}->success\n`;
@@ -150,24 +150,26 @@ export class Footer extends BaseTest {
             await appendFile(this.logFilename, startMessage);
 
             // 1: Test - Start
-            // Reset browser state to ensure all elements will be found
+            // Reset browser state to ensure footer elements will be found
             await this.reset();
+            const footer = await this.chromeDriver.findElement(By.css(TAG.FOOTER));
+            if (footer) {
+                // 2: Test - About
+                await this.runStep(this.FOOTER.about);
 
-            // 2: Test - About
-            await this.runStep(this.FOOTER.about);
+                // 3: Test - Terms
+                await this.runStep(this.FOOTER.terms);
 
-            // 3: Test - Terms
-            await this.runStep(this.FOOTER.terms);
+                // 4: Test - Privacy
+                await this.runStep(this.FOOTER.privacy);
 
-            // 4: Test - Privacy
-            await this.runStep(this.FOOTER.privacy);
+                // 5: Test - Accessibility
+                await this.runStep(this.FOOTER.accessibility);
 
-            // 5: Test - Accessibility
-            await this.runStep(this.FOOTER.accessibility);
-
-            // 6: Test - Finish
-            await this.chromeDriver.sleep(CLICK_DELAY);
-            await this.finish();
+                // 6: Test - Finish
+                await this.chromeDriver.sleep(CLICK_DELAY);
+                await this.finish();
+            }
         } catch (error: any) {
             const fail_message = `Footer::runTests->onFailure\n${error}\n`;
             console.log(fail_message);
@@ -178,7 +180,6 @@ export class Footer extends BaseTest {
     /**
      * Action: Finish Tests
      * Set up statistics and results for logging
-     * TODO: try catch
      */
     private async finish() {
         const endTime = Date.now();
