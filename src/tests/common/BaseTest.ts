@@ -3,7 +3,8 @@
 /**
  * Imports
  */
-import { generateLogFileName } from '../../Utility';
+import { generateLogFileName, setLanguage } from '../../Utility';
+import { LANGUAGE } from '../../Constants';
 import { WebDriver } from 'selenium-webdriver';
 
 /**
@@ -26,7 +27,9 @@ export class BaseTest {
     /**
      * Constructor
      */
-    constructor (locale: string, driver: WebDriver, target: string, component: string, handle?: string) {
+    constructor (locale: LANGUAGE, driver: WebDriver, target: string, component: string, handle?: string) {
+        setLanguage(locale);
+
         this.chromeDriver = driver;
         this.originalWindow = handle;
         this.logFilename = generateLogFileName(`${component}-${locale}`);
