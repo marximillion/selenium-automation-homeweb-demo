@@ -20,5 +20,27 @@
   "header_identifier_toggle": "[aria-label=\"Basculer la langue en EN\"]",
   "header_route_button": "/fr/login",
   "header_route_logo": "/fr",
-  "header_route_toggle": "/en"
+  "header_route_toggle": "/en",
+
+  "public_landing_id_sign_in": "PUBLIC-LANDING-ANON-FR-003",
+  "public_landing_id_register": "PUBLIC-LANDING-ANON-FR-004",
+  "public_landing_id_resource_1": "PUBLIC-LANDING-ANON-FR-007",
+  "public_landing_id_resource_2": "PUBLIC-LANDING-ANON-FR-008",
+  "public_landing_id_resource_3": "PUBLIC-LANDING-ANON-FR-009",
+  "public_landing_id_toolkit": "PUBLIC-LANDING-ANON-FR-xxx",
+  "public_landing_id_help_number": "PUBLIC-LANDING-ANON-FR-xxx",
+  "public_landing_identifier_sign_in": "[title=\"Se connecter\"]",
+  "public_landing_identifier_register": "[title=\"S'inscrire\"]",
+  "public_landing_identifier_resource_1": "[title=\"L’intelligence émotionnelle : pourquoi est-elle importante et comment la développer \"]",
+  "public_landing_identifier_resource_2": "[title=\"L’anxiété liée à l’IA : stratégies pour faire face au changement et à l’incertitude\"]",
+  "public_landing_identifier_resource_3": "[title=\"Lâcher prise sur ses attentes\"]",
+  "public_landing_identifier_toolkit": "Consulter la boîte à outils sur la santé mentale",
+  "public_landing_identifier_help_number": "[alt=\"Besoin d'aide ? Parlons-en\"]",
+  "public_landing_route_sign_in": "/fr/login",
+  "public_landing_route_register": "/Account/HomewebRegister?lang=fr-CA",
+  "public_landing_route_resource_1": "/fr/homewood/la-neurodiversite-en-point-de-mire",
+  "public_landing_route_resource_2": "/fr/homewood/lintelligence-emotionnelle-pourquoi-estelle-importante-et-comment-la-developper",
+  "public_landing_route_resource_3": "/fr/homewood/lanxiete-liee-lia-strategies-pour-faire-face-au-changement-et-lincertitude",
+  "public_landing_route_toolkit": "/fr/homewood/gerer-l-incertitude-votre-boite-a-outils-sur-la-sante-mentale",
+  "public_landing_route_help_number": "tel:1-866-398-9505"
 }

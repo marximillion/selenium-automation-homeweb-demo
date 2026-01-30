@@ -20,5 +20,27 @@
   "header_identifier_toggle": "[aria-label=\"Toggle language to FR\"]",
   "header_route_button": "/en/login",
   "header_route_logo": "/en",
-  "header_route_toggle": "/fr"
+  "header_route_toggle": "/fr",
+
+  "public_landing_id_sign_in": "PUBLIC-LANDING-ANON-EN-003",
+  "public_landing_id_register": "PUBLIC-LANDING-ANON-EN-004",
+  "public_landing_id_resource_1": "PUBLIC-LANDING-ANON-EN-007",
+  "public_landing_id_resource_2": "PUBLIC-LANDING-ANON-EN-008",
+  "public_landing_id_resource_3": "PUBLIC-LANDING-ANON-EN-009",
+  "public_landing_id_toolkit": "PUBLIC-LANDING-ANON-EN-xxx",
+  "public_landing_id_help_number": "PUBLIC-LANDING-ANON-EN-xxx",
+  "public_landing_identifier_sign_in": "[title=\"Sign in\"]",
+  "public_landing_identifier_register": "[title=\"Register\"]",
+  "public_landing_identifier_resource_1": "[title=\"Emotional Intelligence: Why it’s Important and How to Build it\"]",
+  "public_landing_identifier_resource_2": "[title=\"Anxiety: Strategies for Coping with Change and Uncertainty\"]",
+  "public_landing_identifier_resource_3": "[title=\"Letting Go of Expectations\"]",
+  "public_landing_identifier_toolkit": "View the Mental Health Toolkit",
+  "public_landing_identifier_help_number": "[alt=\"Need Help? Let's Talk\"]",
+  "public_landing_route_sign_in": "/en/login",
+  "public_landing_route_register": "/Account/HomewebRegister?lang=en",
+  "public_landing_route_resource_1": "/en/homewood/neurodiversity-focus-energy-drain-masking",
+  "public_landing_route_resource_2": "/en/homewood/emotional-intelligence-why-its-important-how-build",
+  "public_landing_route_resource_3": "/en/homewood/ai-anxiety-strategies-coping-with-change-uncertainty",
+  "public_landing_route_toolkit": "/en/homewood/navigating-uncertainty-your-mental-health-toolkit",
+  "public_landing_route_help_number": "tel:1-800-663-1142"
 }
