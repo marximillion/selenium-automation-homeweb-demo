@@ -5,15 +5,15 @@
  */
 import { Browser, Builder } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
-import { Footer } from './common/Footer';
-import { generateReport } from '../Utility';
-import { Header } from './common/Header';
-import { HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, LANGUAGE } from '../Constants';
+import { Footer } from './Footer';
+import { generateReport } from '../common/Utility';
+import { Header } from './Header';
+import { HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, LANGUAGE } from '../common/Constants';
 
 /**
  * Smoke - Test
  */
-async function smoke() {
+async function Smoke() {
     console.log('smoke->START\n');
 
     /*
@@ -82,5 +82,5 @@ async function smoke() {
     await chromeDriver.quit()
 }
 
-smoke()
+Smoke()
 

@@ -6,8 +6,8 @@
 import { appendFile } from 'node:fs/promises';
 import { BaseTest } from './BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
-import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_API_DOMAIN, LANGUAGE, TAG } from '../../Constants';
-import { generateSummary, translate } from '../../Utility';
+import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_API_DOMAIN, LANGUAGE, TAG } from '../common/Constants';
+import { generateSummary, translate } from '../common/Utility';
 
 /**
  * Header Tests

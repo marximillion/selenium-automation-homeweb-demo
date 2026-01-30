@@ -6,8 +6,8 @@
 import { appendFile } from 'node:fs/promises';
 import { BaseTest } from './BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
-import { CLICK_DELAY, COMPONENT, FOOTER } from '../../Constants';
-import { generateSummary } from '../../Utility';
+import { CLICK_DELAY, TAG, FOOTER, LANGUAGE } from '../common/Constants';
+import { generateSummary } from '../common/Utility';
 
 /**
  * Footer Tests
@@ -32,8 +32,8 @@ export class Footer extends BaseTest {
      * @param target {string}
      * @param handle {string}
      */
-    constructor(locale: string, driver: WebDriver, target: string, handle: string) {
-        super(locale, driver, target, COMPONENT.FOOTER, handle);
+    constructor(locale: LANGUAGE, driver: WebDriver, target: string, handle: string) {
+        super(locale, driver, target, TAG.FOOTER, handle);
         console.log('Footer::constructor()');
 
         // Set up Footer elements, based on locale
