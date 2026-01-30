@@ -53,7 +53,7 @@ export class Header extends BaseTest {
             button: {
                 id: translate('header_id_button'),
                 identifier: translate('header_identifier_button'),
-                route: translate('header_route_button');
+                route: translate('header_route_button')
             }
         };
     }// End of constructor()
