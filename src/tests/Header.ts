@@ -7,25 +7,26 @@ import { appendFile } from 'node:fs/promises';
 import { BaseTest } from './BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
 import { CLICK_DELAY, HOMEWEB_DOMAIN, HOMEWOOD_API_DOMAIN, LANGUAGE, TAG } from '../common/Constants';
+import { ElementType } from '../types/ElementType';
 import { generateSummary, translate } from '../common/Utility';
+
+/**
+ * Interface
+ */
+interface HeaderElements {
+    logo: ElementType,
+    toggle: ElementType,
+    button: ElementType
+}
 
 /**
  * Header Tests
  */
 export class Header extends BaseTest {
     /**
-     * Member Variables - Header Elements
+     * Member Variables
      */
-    // Create Header Object??
-    private readonly LABEL_LOGO: string;
-    private readonly LABEL_TOGGLE: string;
-    private readonly LABEL_BUTTON: string;
-    private readonly ID_LOGO: string;
-    private readonly ID_TOGGLE: string;
-    private readonly ID_BUTTON: string;
-    private readonly ROUTE_LOGO: string;
-    private readonly ROUTE_TOGGLE: string;
-    private readonly ROUTE_BUTTON: string;
+    private readonly HEADER: HeaderElements;
 
     /**
      * Constructor
@@ -38,32 +39,38 @@ export class Header extends BaseTest {
         super(locale, driver, target, TAG.HEADER, handle);
         console.log('Header::constructor()');
 
-        this.LABEL_LOGO = translate('header_identifier_logo');
-        this.LABEL_TOGGLE = translate('header_identifier_toggle');
-        this.LABEL_BUTTON = translate('header_identifier_button');
-
-        this.ID_LOGO = translate('header_id_logo');
-        this.ID_TOGGLE = translate('header_id_toggle');
-        this.ID_BUTTON = translate('header_id_button');
-
-        this.ROUTE_LOGO = translate('header_route_logo');
-        this.ROUTE_TOGGLE = translate('header_route_toggle');
-        this.ROUTE_BUTTON = translate('header_route_button');
+        this.HEADER = {
+            logo: {
+                id: translate('header_id_logo'),
+                identifier: translate('header_identifier_logo'),
+                route: translate('header_route_logo')
+            },
+            toggle: {
+                id: translate('header_id_toggle'),
+                identifier: translate('header_identifier_toggle'),
+                route: translate('header_route_toggle')
+            },
+            button: {
+                id: translate('header_id_button'),
+                identifier: translate('header_identifier_button'),
+                route: translate('header_route_button')
+            }
+        }
     }// End of constructor()
 
     /**
-     * Action: Run Test Step
-     * @param cssSelector {string}
-     * @param stepCode {string}
-     * @param route {string}
+     * Action: Run Test
+     * @param testElement {ElementType}
      */
-    private async runStep(cssSelector: string, stepCode: string, route: string) {
-        console.log(`${stepCode}->START->${cssSelector}`);
+    private async runStep(testElement: ElementType) {
+        const {id, identifier, route} = testElement;
+        console.log(`${id}->START->${identifier}`);
         try {
             // 1: Find element
-            const element = await this.chromeDriver.findElement(By.css(cssSelector));
+            const element = await this.chromeDriver.findElement(By.css(identifier));
 
             // 2: Click element
+            await this.chromeDriver.sleep(CLICK_DELAY);
             await element.click();
 
             /**
@@ -74,18 +81,18 @@ export class Header extends BaseTest {
 
             // 3.1: Domain Check - Homeweb
             if (url.origin === HOMEWEB_DOMAIN) {
-                if (url.pathname == route) {
+                if (url.pathname === route) {
                     // 4: Test - Pass
                     this.passed += 1;
-                    const success_message = `${stepCode}->success\n`;
+                    const success_message = `${id}->success\n`;
                     await appendFile(this.logFilename, success_message);
                 }
             }
             // 3.2: Domain Check - Homewood API
             else if (url.origin === HOMEWOOD_API_DOMAIN) {
-                if ( url.pathname == route ) {
+                if ( url.pathname === route ) {
                     this.passed += 1;
-                    const success_message = `${stepCode}->success\n`;
+                    const success_message = `${id}->success\n`;
                     await appendFile( this.logFilename, success_message );
                 }
             }
@@ -95,16 +102,16 @@ export class Header extends BaseTest {
             }
         }
         catch (error: any) {
-            // 5: Test - Fail
+            // 4: Test - Fail
             this.failed += 1;
-            const fail_message = `${stepCode}->onFailure ${error}\n`;
+            const fail_message = `${id}->onFailure ${error}\n`;
             console.log(fail_message);
             await appendFile(this.logFilename, fail_message);
         }
         finally {
-            // 6: Reset browser state
+            // 5: Reset browser state
             this.testTotal += 1;
-            console.log(`${stepCode}->END`);
+            console.log(`${id}->END`);
             await this.reset();
         }
     }// End of runStep()
@@ -126,25 +133,13 @@ export class Header extends BaseTest {
             const header = await this.chromeDriver.findElement(By.css(TAG.HEADER));
             if (header) {
                 // 2: Test - Homeweb Logo
-                await this.runStep(
-                    this.LABEL_LOGO,
-                    this.ID_LOGO,
-                    this.ROUTE_LOGO
-                );
+                await this.runStep(this.HEADER.logo);
 
                 // 3: Test - Language Toggle
-                await this.runStep(
-                    this.LABEL_TOGGLE,
-                    this.ID_TOGGLE,
-                    this.ROUTE_TOGGLE
-                );
+                await this.runStep(this.HEADER.toggle);
 
                 // 4: Test - Sign In Button
-                await this.runStep(
-                    this.LABEL_BUTTON,
-                    this.ID_BUTTON,
-                    this.ROUTE_BUTTON
-                );
+                await this.runStep(this.HEADER.button);
 
                 // 5: Test - Finish
                 await this.chromeDriver.sleep(CLICK_DELAY);
@@ -161,6 +156,7 @@ export class Header extends BaseTest {
     /**
      * Action: Finish Tests
      * Set up statistics and results for logging
+     * TODO: try catch
      */
     private async finish() {
         const endTime = Date.now();
@@ -181,6 +177,7 @@ export class Header extends BaseTest {
 
     /**
      * Action: Reset - Browser State
+     * TODO: try catch
      */
     private async reset() {
         // 1: Check to ensure browser is looking at the correct window
