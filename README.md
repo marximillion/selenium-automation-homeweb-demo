@@ -5,9 +5,9 @@ Test Automation
 
 ---
 # Environment Versions
-- node v25.2.1
+- node v25.5.0
 - yarn 1.22.22
-- Google Chrome Version 144.0.7559.97
+- Google Chrome Version 144.0.7559.110
 - ChromeDriver 144.0.7559.96
 
 > # Install Instruction
