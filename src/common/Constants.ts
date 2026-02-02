@@ -17,8 +17,13 @@ export const enum LANGUAGE {
 }
 
 export const enum TAG {
-    HEADER= 'header',
+    HEADER = 'header',
     FOOTER = 'footer',
     MAIN = 'main',
     PUBLIC_LANDING = 'public-landing',
+}
+
+export const enum FIND {
+    CSS = 'css',
+    TEXT = 'text'
 }
