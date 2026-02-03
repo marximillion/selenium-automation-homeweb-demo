@@ -5,7 +5,7 @@ Generated from codebase analysis by Claude AI
 ```
 ---
 > P1
-> 1. [ ] Test Framework
+> 1. [ ] [WIP] - Test Framework - Jest
 > 2. [ ] Silent Test Failures
 > 3. [ ] Weak Assertions
 > 4. [ ] No Explicit Waits
