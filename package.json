@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "main": "index.ts",
   "private": true,
+  "scripts": {
+    "smoke": "ts-node src/tests/Smoke",
+    "test": "jest"
+  },
   "dependencies": {
     "i18n-js": "^4.5.1",
     "selenium-webdriver": "^4.40.0"
   },
-  "scripts": {
-    "smoke": "ts-node src/tests/Smoke"
-  },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/selenium-webdriver": "^4.35.5",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
