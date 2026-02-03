@@ -1,6 +1,8 @@
 # Task List
 MDG 2026
-
+```
+Generated from codebase analysis by Claude AI
+```
 ---
 > P1
 > 1. [ ] Test Framework
