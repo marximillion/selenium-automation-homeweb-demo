@@ -1,11 +1,31 @@
 import { Browser, Builder, WebDriver } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
-import { HOMEWEB_LANDING_URL_EN, LANGUAGE } from '../src/common/Constants';
-import { Header } from '../src/tests/general/Header';
+import { HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, LANGUAGE } from '../src/common/Constants';
+import { ElementType } from '../src/types/ElementType';
+import { translate } from '../src/common/Utility';
+import { Footer } from '../src/tests/Footer';
+import { Header } from '../src/tests/Header';
 
-describe ('Smoke Tests', () => {
-    // console.log('Smoke->START\n');
+/**
+ * Interfaces
+ */
+interface HeaderElements {
+    logo: ElementType,
+    toggle: ElementType,
+    button: ElementType
+}
 
+/**
+ * Interfaces
+ */
+interface FooterElements {
+    about: ElementType,
+    terms: ElementType,
+    privacy: ElementType,
+    accessibility: ElementType
+}
+
+describe ('Smoke Test', () => {
     // 1: Declare variables
     let chromeDriver: WebDriver;
     let options: chrome.Options
@@ -31,8 +51,8 @@ describe ('Smoke Tests', () => {
         await chromeDriver.quit();
     })
 
-    // 4: EN - Tests
-    describe('EN Tests', () => {
+    // 4: English Tests
+    describe('EN', () => {
         // 4.1: Initialize variables
         beforeAll(() => {
             target = HOMEWEB_LANDING_URL_EN;
@@ -45,10 +65,99 @@ describe ('Smoke Tests', () => {
             window = await chromeDriver.getWindowHandle();
         })
 
-        // 4.3: Header
-        test('HEADER->SUCCESS', async () => {
-            const header_en = new Header(locale, chromeDriver, target);
-            // await header_en.runTests(); // contains assertions
+        // 4.3: Header - Tests
+        describe('Header', () => {
+            // 4.3.1 Initialize variables
+            const HEADER_ELEMENTS: HeaderElements = {
+                logo: {
+                    id: translate('header_id_logo'),
+                    identifier: translate('header_identifier_logo'),
+                    route: translate('header_route_logo')
+                },
+                toggle: {
+                    id: translate('header_id_toggle'),
+                    identifier: translate('header_identifier_toggle'),
+                    route: translate('header_route_toggle')
+                },
+                button: {
+                    id: translate('header_id_button'),
+                    identifier: translate('header_identifier_button'),
+                    route: translate('header_route_button')
+                }
+            };
+
+            // 4.3.1: Homeweb Logo
+            test(HEADER_ELEMENTS.logo.id, async () => {
+                const header_en = new Header(locale, chromeDriver, target, window);
+                await header_en.runStep(HEADER_ELEMENTS.logo);
+            });
+
+            // 4.3.2: Language Toggle
+            test(HEADER_ELEMENTS.toggle.id, async () => {
+                const header_en = new Header(locale, chromeDriver, target, window);
+                await header_en.runStep(HEADER_ELEMENTS.toggle);
+            });
+
+            // 4.3.3: Sign In Button
+            test(HEADER_ELEMENTS.button.id, async () => {
+                const header_en = new Header(locale, chromeDriver, target, window);
+                await header_en.runStep(HEADER_ELEMENTS.button);
+            });
         });
-    })
+
+        // 4.4: Footer - Tests
+        describe('Footer', () =>
+        {
+            const FOOTER_ELEMENTS: FooterElements = {
+                about: {
+                    id: translate( 'footer_id_about' ),
+                    identifier: translate( 'footer_identifier_about' ),
+                    route: translate( 'footer_route_about' )
+                },
+                terms: {
+                    id: translate( 'footer_id_terms' ),
+                    identifier: translate( 'footer_identifier_terms' ),
+                    route: translate( 'footer_route_terms' )
+                },
+                privacy: {
+                    id: translate( 'footer_id_privacy' ),
+                    identifier: translate( 'footer_identifier_privacy' ),
+                    route: translate( 'footer_route_privacy' )
+                },
+                accessibility: {
+                    id: translate( 'footer_id_accessibility' ),
+                    identifier: translate( 'footer_identifier_accessibility' ),
+                    route: translate( 'footer_route_accessibility' )
+                }
+            };
+
+            // 4.4.1: About
+            test( FOOTER_ELEMENTS.about.id, async () =>
+            {
+                const footer_en = new Footer( locale, chromeDriver, target, window );
+                await footer_en.runStep( FOOTER_ELEMENTS.about );
+            } );
+
+            // 4.4.2: Terms of Service
+            test( FOOTER_ELEMENTS.terms.id, async () =>
+            {
+                const footer_en = new Footer( locale, chromeDriver, target, window );
+                await footer_en.runStep( FOOTER_ELEMENTS.terms );
+            } );
+
+            // 4.4.3: Privacy Policy
+            test( FOOTER_ELEMENTS.privacy.id, async () =>
+            {
+                const footer_en = new Footer( locale, chromeDriver, target, window );
+                await footer_en.runStep( FOOTER_ELEMENTS.privacy );
+            } );
+
+            // 4.3.3: Sign In Button
+            test( FOOTER_ELEMENTS.accessibility.id, async () =>
+            {
+                const footer_en = new Footer( locale, chromeDriver, target, window );
+                await footer_en.runStep( FOOTER_ELEMENTS.accessibility );
+            } );
+        });
+    });
 });
