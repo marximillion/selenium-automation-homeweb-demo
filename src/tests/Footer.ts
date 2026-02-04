@@ -25,10 +25,6 @@ interface FooterElements {
  */
 export class Footer extends BaseTest {
     /**
-     * Member Variables
-     */
-
-    /**
      * Constructor
      * @param locale {string}
      * @param driver {WebDriver}

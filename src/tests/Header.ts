@@ -13,7 +13,6 @@ import { ElementType } from '../types/ElementType';
  * Header - Anonymous Tests
  */
 export class Header extends BaseTest {
-
     /**
      * Constructor
      * @param locale {string}
@@ -26,7 +25,7 @@ export class Header extends BaseTest {
     }// End of constructor()
 
     /**
-     * Action: Run Test
+     * Action: Run Test Step
      * @param testElement {ElementType}
      */
     public async runStep(testElement: ElementType) {
