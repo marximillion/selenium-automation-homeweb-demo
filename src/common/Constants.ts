@@ -31,3 +31,13 @@ export const enum FIND {
     CSS = 'css',
     TEXT = 'text'
 }
+
+export const enum TIMEOUT {
+    S_HALF = 500,
+    S_ONE = 1000,
+    S_FIVE = 5000,
+    S_FIFTEEN = 15000,
+    S_THIRTY = 30000,
+    M_ONE = 60000,
+    M_FIVE = 300000
+}
