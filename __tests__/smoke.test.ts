@@ -8,7 +8,7 @@ import chrome from 'selenium-webdriver/chrome';
 import { ElementType } from '../src/types/ElementType';
 import { Footer } from '../src/tests/Footer';
 import { Header } from '../src/tests/Header';
-import { HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, LANGUAGE } from '../src/common/Constants';
+import { HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, LANGUAGE, TIMEOUT } from '../src/common/Constants';
 import { translate } from '../src/common/Utility';
 
 /**
@@ -20,9 +20,6 @@ interface HeaderElements {
     button: ElementType
 }
 
-/**
- * Interfaces
- */
 interface FooterElements {
     about: ElementType,
     terms: ElementType,
@@ -30,7 +27,12 @@ interface FooterElements {
     accessibility: ElementType
 }
 
+/**
+ * Test Suite: Smoke Test
+ */
 describe ('Smoke Test', () => {
+    jest.setTimeout(TIMEOUT.M_FIVE);
+
     // 1: Declare variables
     let chromeDriver: WebDriver;
     let options: chrome.Options
