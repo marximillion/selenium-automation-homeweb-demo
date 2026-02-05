@@ -14,7 +14,7 @@ import { LegacyPublicLanding } from './LegacyPublicLanding';
 /**
  * Smoke - Test
  */
-async function Smoke() {
+async function LegacySmoke() {
     console.log('Smoke->START\n');
     /*
      * 1: Set up
@@ -81,4 +81,4 @@ async function Smoke() {
     }
     await chromeDriver.quit()
 }
-Smoke()
+LegacySmoke()

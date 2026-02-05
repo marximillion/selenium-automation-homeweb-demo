@@ -4,11 +4,11 @@
  * Imports
  */
 import { appendFile } from 'node:fs/promises';
-import { BaseTest } from './BaseTest';
 import { By, WebDriver } from 'selenium-webdriver';
 import { CLICK_DELAY, HOMEWEB_DOMAIN, LANGUAGE, QUANTUM_API_DOMAIN, TAG } from '../../common/Constants';
 import { ElementType } from '../../types/ElementType';
 import { generateSummary, translate } from '../../common/Utility';
+import { LegacyBaseTest } from './LegacyBaseTest';
 
 /**
  * Interface
@@ -22,7 +22,7 @@ interface HeaderElements {
 /**
  * Header - Anonymous Tests
  */
-export class LegacyHeader extends BaseTest {
+export class LegacyHeader extends LegacyBaseTest {
     /**
      * Member Variables
      */

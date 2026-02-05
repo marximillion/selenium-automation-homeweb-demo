@@ -10,7 +10,7 @@ import { WebDriver } from 'selenium-webdriver';
 /**
  * Base Test class
  */
-export class BaseTest {
+export class LegacyBaseTest {
     /**
      * Member Variables
      */

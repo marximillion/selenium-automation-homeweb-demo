@@ -5,11 +5,11 @@
  */
 
 import { appendFile } from 'node:fs/promises';
-import { BaseTest } from './BaseTest';
 import { By, WebDriver, WebElement } from 'selenium-webdriver';
 import { CLICK_DELAY, FIND, HOMEWEB_DOMAIN, IDENTITY_API_DOMAIN, LANGUAGE, QUANTUM_API_DOMAIN, TAG } from '../../common/Constants';
 import { ElementType } from '../../types/ElementType';
 import { generateSummary, translate } from '../../common/Utility';
+import { LegacyBaseTest } from './LegacyBaseTest';
 
 /**
  * Interface
@@ -27,7 +27,7 @@ interface PublicLandingElements {
 /**
  * Public Landing - Anonymous Tests
  */
-export class LegacyPublicLanding extends BaseTest {
+export class LegacyPublicLanding extends LegacyBaseTest {
     /**
      * Member Variables
      */
