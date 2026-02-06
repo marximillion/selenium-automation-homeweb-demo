@@ -21,10 +21,13 @@ export const enum TAG {
     FOOTER = 'footer',
     MAIN = 'main',
     PUBLIC_LANDING = 'public-landing',
+    LOGIN = 'login'
 }
 
 export const enum ID {
-    CONTENT = 'content'
+    CONTENT = 'content',
+    EMAIL = 'emailAddress',
+    PASSWORD = 'password',
 }
 
 export const enum FIND {
