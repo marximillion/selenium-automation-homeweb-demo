@@ -45,5 +45,15 @@
   "public_landing_route_help_number": "tel:1-800-663-1142",
 
   "bat_id_navigate": "BAT-WEB-EN-001",
-  "bat_id_resources": "BAT-WEB-EN-002"
+  "bat_id_resources": "BAT-WEB-EN-002",
+  "bat_id_login": "BAT-WEB-EN-003",
+
+  "login_id_email": "LOGIN-EN-001",
+  "login_id_password": "LOGIN-EN-002",
+  "login_id_next": "LOGIN-EN-003",
+  "login_id_sign_in": "LOGIN-EN-004",
+  "login_identifier_button": "[type=\"submit\"]",
+  "login_next": "Next",
+  "login_sign_in": "Sign In",
+  "login_sign_in_route": "/app/en/homeweb/dashboard"
 }
