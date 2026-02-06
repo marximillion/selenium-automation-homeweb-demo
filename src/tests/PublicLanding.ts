@@ -3,12 +3,14 @@
 /**
  * Imports
  */
-
 import { appendFile } from 'node:fs/promises';
-import { BaseTest } from './legacy-pure-ts/BaseTest';
+import { BaseTest } from './BaseTest';
 import { By, until, WebDriver, WebElement } from 'selenium-webdriver';
-import { FIND, HOMEWEB_DOMAIN, ID, LANGUAGE, TAG } from '../common/Constants';
+import { FIND, HOMEWEB_DOMAIN, ID, IDENTITY_API_DOMAIN, LANGUAGE, QUANTUM_API_DOMAIN, TAG, TIMEOUT } from '../common/Constants';
 import { ElementType } from '../types/ElementType';
+import { Login } from '../Login';
+import { translate } from '../common/Utility';
+
 
 /**
  * Public Landing - Anonymous Tests
@@ -26,11 +28,11 @@ export class PublicLanding extends BaseTest {
     }// End of constructor()
 
     /**
-     * Action: Run Test Step
+     * Test: Resources
      * @param testElement {ElementType}
      * @param find {string}
      */
-    public async runStep(testElement: ElementType, find?: string) {
+    public async testResource(testElement: ElementType, find?: string) {
         const {id, identifier, route} = testElement;
         let url: URL;
         let element: WebElement;
@@ -44,16 +46,16 @@ export class PublicLanding extends BaseTest {
             default:
                 element = await this.chromeDriver.findElement(By.css(identifier));
                 break;
-            }
+        }
 
         // 2: Scroll to element
         await this.chromeDriver.executeScript(
             "arguments[0].scrollIntoView({ block: 'center', inline: 'center' });",
             element
         );
-        await this.chromeDriver.sleep(500);
-        await this.chromeDriver.wait(until.elementIsVisible(element), 10000);
-        await this.chromeDriver.wait(until.elementIsEnabled(element), 10000);
+        await this.chromeDriver.sleep(TIMEOUT.S_HALF);
+        await this.chromeDriver.wait(until.elementIsVisible(element), TIMEOUT.S_FIVE);
+        await this.chromeDriver.wait(until.elementIsEnabled(element), TIMEOUT.S_FIVE);
 
         // 3: Click element
         await element.click();
@@ -85,9 +87,115 @@ export class PublicLanding extends BaseTest {
         // 5: Additional check to ensure page content has been loaded
         await this.chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)))
 
-        // 6: Navigate back to original page
+        // 6: Navigate back to original page, and scroll to the top
         await this.chromeDriver.navigate().back();
+        await this.chromeDriver.executeScript('window.scrollTo(0, 0);');
     }// End of runStep()
+
+    /**
+     * Test: Login
+     */
+    public async testLogin(){
+        const LOGIN = {
+            id: translate('public_landing_id_sign_in'),
+            identifier: translate('public_landing_identifier_sign_in'),
+            route: translate('public_landing_route_sign_in')
+        }
+        let url: URL;
+
+        // 1: Find element
+        const element = await this.chromeDriver.findElement(By.css(LOGIN.identifier));
+
+        // 2: Scroll to element
+        await this.chromeDriver.executeScript(
+            "arguments[0].scrollIntoView({ block: 'center', inline: 'center' });",
+            element
+        );
+        await this.chromeDriver.sleep(TIMEOUT.S_ONE);
+        await this.chromeDriver.wait(until.elementIsVisible(element), TIMEOUT.S_FIVE);
+        await this.chromeDriver.wait(until.elementIsEnabled(element), TIMEOUT.S_FIVE);
+
+        // 3: Click element
+        await element.click();
+
+        /**
+         * 4: Validate click
+         */
+        // 4.1: Set up clicked URL
+        url = new URL(await this.chromeDriver.getCurrentUrl());
+
+        // 4.2: Domain Check - Homeweb
+        if (url.origin === QUANTUM_API_DOMAIN) {
+            if (url.pathname === LOGIN.route) {
+                // 4.2.1: Test - Pass
+                const success_message = `${LOGIN.id}->success\n`;
+                await appendFile(this.logFilename, success_message);
+            }
+            else {
+                // 4.2.2: Test - Fail | Pathname doesn't match
+                throw new Error(`Expected route ${LOGIN.route}, got ${url.pathname}`);
+            }
+        }
+        // 4.3: Domain Check - UNKNOWN
+        else {
+            // 4.3.1: Test - Fail | Domain doesn't match
+            throw new Error(`UNKNOWN ORIGIN: ${url.origin}`);
+        }
+
+        // 5: Additional check to ensure page content has been loaded
+        await this.chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)))
+    }
+
+    /**
+     * Test: Register
+     */
+    public async testRegister(testElement: ElementType){
+        const {id, identifier, route} = testElement;
+        let url: URL;
+
+        // 1: Find element
+        const element = await this.chromeDriver.findElement(By.css(identifier));
+
+        // 2: Scroll to element
+        await this.chromeDriver.executeScript(
+            "arguments[0].scrollIntoView({ block: 'center', inline: 'center' });",
+            element
+        );
+        await this.chromeDriver.sleep(TIMEOUT.S_HALF);
+        await this.chromeDriver.wait(until.elementIsVisible(element), TIMEOUT.S_FIVE);
+        await this.chromeDriver.wait(until.elementIsEnabled(element), TIMEOUT.S_FIVE);
+
+        // 3: Click element
+        await element.click();
+
+        /**
+         * 4: Validate click
+         */
+        // 4.1: Set up clicked URL
+        url = new URL(await this.chromeDriver.getCurrentUrl());
+
+        // 4.2: Domain Check - Homeweb
+        if (url.origin === IDENTITY_API_DOMAIN) {
+            if (url.pathname === route) {
+                // 4.2.1: Test - Pass
+                const success_message = `${id}->success\n`;
+                await appendFile(this.logFilename, success_message);
+            }
+            else {
+                // 4.2.2: Test - Fail | Pathname doesn't match
+                throw new Error(`Expected route ${route}, got ${url.pathname}`);
+            }
+        }
+        // 4.3: Domain Check - UNKNOWN
+        else {
+            // 4.3.1: Test - Fail | Domain doesn't match
+            throw new Error(`UNKNOWN ORIGIN: ${url.origin}`);
+        }
+
+        // 5: Additional check to ensure page content has been loaded
+        await this.chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)))
+        await this.chromeDriver.sleep(TIMEOUT.S_ONE);
+    }
 }// End of class
 // End of file
 
