@@ -80,7 +80,18 @@ export class Authenticated extends BaseTest {
             }
         }
 
-        // 5: Additional check to ensure page content has been loaded
-        await this.chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)))
+        // 5: Navigate back
+        await this.chromeDriver.navigate().back();
     }// End of testButton()
-}
+
+    // TODO
+    public async testModal () {
+
+    }
+
+    // TODO
+    public async testCourse () {
+
+    }
+}// End of class
+// End of file

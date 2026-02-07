@@ -40,6 +40,7 @@ interface AuthenticatedElements {
     button_access_childcare: ElementType;
     button_access_eldercare: ElementType;
     button_access_hra: ElementType;
+    button_consent: ElementType;
 }
 
 interface AuthenticatedHeaderElements {
@@ -108,7 +109,7 @@ describe ('Build Acceptance Test', () => {
 
             // 4.2.2: Tests - Public Landing
             describe('Public Landing', () => {
-                jest.setTimeout(TIMEOUT.S_THIRTY);
+                jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.2.1: Set up public landing page elements
                 beforeAll(() => {
@@ -153,7 +154,7 @@ describe ('Build Acceptance Test', () => {
 
             // 4.2.3: Tests - Login
             describe ('Login - Personal', () => {
-                jest.setTimeout(TIMEOUT.S_THIRTY);
+                jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.3.1: Set up login page elements
                 beforeAll(() => {
@@ -191,7 +192,7 @@ describe ('Build Acceptance Test', () => {
 
             // 4.2.4: Tests - Authenticated
             describe ('Authenticated - Personal', () => {
-                jest.setTimeout(TIMEOUT.S_THIRTY);
+                jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.4.1: Set up authenticated elements
                 beforeAll(() => {
@@ -213,6 +214,10 @@ describe ('Build Acceptance Test', () => {
                         button_access_hra: {
                             id: translate('authenticated_id_access_hra'),
                             identifier: translate('authenticated_identifier_access_hra'),
+                        },
+                        button_consent: {
+                            id: translate(''),
+                            identifier: translate('')
                         }
                     };
                     AUTHENTICATED_HEADER_ELEMENTS = {
@@ -241,7 +246,6 @@ describe ('Build Acceptance Test', () => {
                     await chromeDriver.get(sentio_resource_target);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
                     await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_sentio);
-                    await chromeDriver.navigate().back();
                 });
 
                 // 4.2.4.3: Test - Logout
@@ -253,7 +257,7 @@ describe ('Build Acceptance Test', () => {
 
             // 4.2.5: Tests - Login
             describe ('Login - Demo', () => {
-                jest.setTimeout(TIMEOUT.S_THIRTY);
+                jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.5.1: Test - Demo Login
                 test(translate('bat_id_login_demo'), async () => {
@@ -269,32 +273,37 @@ describe ('Build Acceptance Test', () => {
             describe ('Authenticated - Demo', () => {
                 jest.setTimeout(TIMEOUT.S_THIRTY);
 
-                // TODO: Validate kick outs (ChildCare, ElderCare, HRA)
                 // 4.2.4.1: Test - Kick outs
-                // test(translate('bat_id_kickouts'), async () => {
-                //     // Child Care
-                //     const childcare_resource_target = "https://homeweb.ca/app/en/resources/579ba4db88db7af01fe6ddd4";
-                //     await chromeDriver.get(childcare_resource_target);
-                //     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                //     await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_childcare);
-                //
-                //     // Elder Care
-                //     const eldercare_resource_target = "https://homeweb.ca/app/en/resources/579ba49a88db7af01fe6ddc8";
-                //     await chromeDriver.get(eldercare_resource_target);
-                //     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                //     await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_eldercare);
-                //
-                //     // Health Risk Assessment
-                //     const hra_resource_target = "https://homeweb.ca/app/en/resources/579ba53088db7af01fe6dde6";
-                //     await chromeDriver.get(hra_resource_target);
-                //     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                //     await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_hra);
-                // });
-            })
-        })
-        // test('BAT-WEB-009', async () => {
-        //     // TODO: Validate course consent
-        // })
+                test(translate('bat_id_kickouts'), async () => {
+                    // Child Care
+                    const childcare_resource_target = "https://homeweb.ca/app/en/resources/579ba4db88db7af01fe6ddd4";
+                    await chromeDriver.get(childcare_resource_target);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_childcare);
+
+                    // Elder Care
+                    const eldercare_resource_target = "https://homeweb.ca/app/en/resources/579ba49a88db7af01fe6ddc8";
+                    await chromeDriver.get(eldercare_resource_target);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_eldercare);
+
+                    // Health Risk Assessment
+                    const hra_resource_target = "https://homeweb.ca/app/en/resources/579ba53088db7af01fe6dde6";
+                    await chromeDriver.get(hra_resource_target);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_hra);
+                });
+
+                // 4.2.4.2: Test - Course Consent
+                test(translate('bat_id_course'), async () => {
+                    const course_target = "https://homeweb.ca/app/en/resources/564a36083392100756dd3e32";
+                    await chromeDriver.get(course_target);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    // TODO
+                });
+
+            });
+        });
 
         // describe('Customer Portal', () => {
         //     test('BAT-WEB-010', async () => {
@@ -305,5 +314,5 @@ describe ('Build Acceptance Test', () => {
         //         // TODO: Login
         //     })
         // })
-    })
-})
+    });
+});
