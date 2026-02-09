@@ -11,10 +11,11 @@ export const SENTIO_DOMAIN = 'https://sentioapp.com';
 export const LIFESTAGE_DOMAIN = 'https://lifestagecare.ca';
 export const LIFESTYLES_DOMAIN = 'https://www.healthycommunity.ca'
 export const QUANTUM_API_DOMAIN = 'https://api.homewoodhealth.io';
-const HOMEWEB_API_DOMAIN = 'https://api.homeweb.ca'; // TODO: CHECK THIS!! KEEP GETTING CAUGHT ON BAT-WEB-EN-008
+export const HOMEWEB_API_DOMAIN = 'https://api.homeweb.ca';
 export const IDENTITY_API_DOMAIN = 'https://i7.homewoodhealth.com'
 export const HOMEWEB_LANDING_URL_EN = 'https://homeweb.ca/en';
 export const HOMEWEB_LANDING_URL_FR = 'https://homeweb.ca/fr';
+export const CUSTOMER_PORTAL_URL = 'https://portal.homewoodhealth.com'
 
 export const KNOWN_DOMAINS = [
     HOMEWEB_DOMAIN,
@@ -23,7 +24,7 @@ export const KNOWN_DOMAINS = [
     LIFESTAGE_DOMAIN,
     LIFESTYLES_DOMAIN,
     QUANTUM_API_DOMAIN,
-    HOMEWEB_API_DOMAIN, 
+    HOMEWEB_API_DOMAIN,
     IDENTITY_API_DOMAIN
 ];
 
@@ -38,7 +39,7 @@ export const enum TAG {
     MAIN = 'main',
     PUBLIC_LANDING = 'public-landing',
     LOGIN = 'login',
-    AUTH = 'auth'
+    AUTH = 'auth',
 }
 
 export const enum ID {
@@ -63,5 +64,6 @@ export const enum TIMEOUT {
 }
 
 export const enum CSS {
-    DROPDOWN = '.dropdown-menu.show'
+    DROPDOWN = '.dropdown-menu.show',
+    IFRAME = 'iframe'
 }
