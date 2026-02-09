@@ -57,6 +57,9 @@
   "bat_id_logout": "BAT-WEB-FR-006",
   "bat_id_login_demo": "BAT-WEB-FR-007",
   "bat_id_kickouts": "BAT-WEB-FR-008",
+  "bat_id_course": "BAT-WEB-FR-009",
+  "bat_id_embedded": "BAT-WEB-FR-010",
+  "bat_id_customer_portal": "BAT-WEB-FR-011",
 
   "login_id_email": "LOGIN-FR-001",
   "login_id_password": "LOGIN-FR-002",
@@ -74,5 +77,12 @@
   "authenticated_identifier_access_sentio": "Accéder à Sentio",
   "authenticated_identifier_access_childcare": "Accéder Localisateur de ressources pour les soins aux enfants – Soutien Étapes-vie",
   "authenticated_identifier_access_eldercare": "Accéder Localisateur de ressources pour les soins aux aînés – Soutien Étapes-vie",
-  "authenticated_identifier_access_hra": "Accéder Le Questionnaire santé"
+  "authenticated_identifier_access_hra": "Accéder Le Questionnaire santé",
+
+  "customer_portal_id_insight_monthly_registrations": "HEADER-CUSTOMER-PORTAL-FR-001",
+  "customer_portal_id_insight_eq_dashboard": "HEADER-CUSTOMER-PORTAL-FR-002",
+  "customer_portal_id_insight_ahs": "HEADER-CUSTOMER-PORTAL-FR-003",
+  "customer_portal_identifier_insight_monthly_registrations": "Monthly Registrations Year-over-Year",
+  "customer_portal_identifier_insight_eq_dashboard": "Rapport d'utilisation",
+  "customer_portal_identifier_insight_ahs": "Perspectives: Alberta Health Services"
 }

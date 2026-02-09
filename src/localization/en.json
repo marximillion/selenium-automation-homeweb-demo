@@ -58,6 +58,8 @@
   "bat_id_login_demo": "BAT-WEB-EN-007",
   "bat_id_kickouts": "BAT-WEB-EN-008",
   "bat_id_course": "BAT-WEB-EN-009",
+  "bat_id_embedded": "BAT-WEB-EN-010",
+  "bat_id_customer_portal": "BAT-WEB-EN-011",
 
   "login_id_email": "LOGIN-EN-001",
   "login_id_password": "LOGIN-EN-002",
@@ -72,10 +74,15 @@
   "authenticated_id_access_childcare": "AUTH-EN-002",
   "authenticated_id_access_eldercare": "AUTH-EN-003",
   "authenticated_id_access_hra": "AUTH-EN-004",
-  "authenticated_id_accept": "AUTH-EN-006",
   "authenticated_identifier_access_sentio": "Access Sentio",
   "authenticated_identifier_access_childcare": "Access Childcare Resource Locator by LifestageCare",
   "authenticated_identifier_access_eldercare": "Access Eldercare Resource Locator by LifestageCare",
   "authenticated_identifier_access_hra": "Access Health Risk Assessment",
-  "authenticated_identifier_accept": "button[data-bs-dismiss=\"modal\"]"
+
+  "customer_portal_id_insight_monthly_registrations": "HEADER-CUSTOMER-PORTAL-EN-001",
+  "customer_portal_id_insight_eq_dashboard": "HEADER-CUSTOMER-PORTAL-EN-002",
+  "customer_portal_id_insight_ahs": "HEADER-CUSTOMER-PORTAL-EN-003",
+  "customer_portal_identifier_insight_monthly_registrations": "Monthly Registrations Year-over-Year",
+  "customer_portal_identifier_insight_eq_dashboard": "Equitable Dashboard",
+  "customer_portal_identifier_insight_ahs": "Insights: Alberta Health Services"
 }
