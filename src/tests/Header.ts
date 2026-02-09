@@ -6,8 +6,8 @@
 import { appendFile } from 'node:fs/promises';
 import { BaseTest } from './BaseTest';
 import { By, until, WebDriver } from 'selenium-webdriver';
-import { ElementType } from '../types/ElementType';
 import { CSS, HOMEWEB_DOMAIN, ID, LANGUAGE, QUANTUM_API_DOMAIN, TAG, TIMEOUT } from '../common/Constants';
+import { ElementType } from '../types/ElementType';
 
 /**
  * Header - Anonymous Tests
@@ -24,6 +24,7 @@ export class Header extends BaseTest {
         super(locale, driver, target, TAG.HEADER, handle);
     }// End of constructor()
 
+    // ====================== HOMEWEB ===================== //
     // ==== ANONYMOUS ==== //
     /**
      * Action: Run Test Step
@@ -139,5 +140,32 @@ export class Header extends BaseTest {
         // 5: Additional check to ensure page content has been loaded
         await this.chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)))
     }
+
+    // ================== CUSTOMER PORTAL ================= //
+    public async testInsight (testElement: ElementType){
+        const dropdownToggle = await this.chromeDriver.wait(
+            until.elementLocated(
+                By.css('#navigation-primary .dropdown-toggle')
+            ),
+            TIMEOUT.S_FIVE
+        );
+
+        await dropdownToggle.click();
+
+        // // 1: Find element
+        const {id, identifier, route} = testElement;
+        const insight = await this.chromeDriver.findElement(By.linkText(identifier));
+
+        // 3: Click element
+        await insight.click();
+
+        await this.chromeDriver.sleep(TIMEOUT.S_FIVE);
+        const iframe = await this.chromeDriver.wait(
+            until.elementLocated(By.css(CSS.IFRAME)),
+            TIMEOUT.S_FIFTEEN
+        );
+        await this.chromeDriver.wait(until.elementIsVisible(iframe), TIMEOUT.S_FIFTEEN);
+        await this.chromeDriver.wait(until.elementIsEnabled(iframe), TIMEOUT.S_FIFTEEN);
+    };// End of testInsight()
 }// End of class
 // End of file
