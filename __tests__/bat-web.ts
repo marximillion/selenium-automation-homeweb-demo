@@ -41,6 +41,7 @@ interface AuthenticatedElements {
     button_access_eldercare: ElementType;
     button_access_hra: ElementType;
     button_consent: ElementType;
+    button_accept: ElementType;
 }
 
 interface AuthenticatedHeaderElements {
@@ -51,7 +52,7 @@ interface AuthenticatedHeaderElements {
 /**
  * Test Suite: Build Acceptance Test
  */
-describe ('Build Acceptance Test', () => {
+describe('Build Acceptance Test', () => {
     jest.setTimeout(TIMEOUT.M_FIVE);
 
     // 1: Declare variables
@@ -153,7 +154,7 @@ describe ('Build Acceptance Test', () => {
             });
 
             // 4.2.3: Tests - Login
-            describe ('Login - Personal', () => {
+            describe('Login - Personal', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.3.1: Set up login page elements
@@ -191,7 +192,7 @@ describe ('Build Acceptance Test', () => {
             })
 
             // 4.2.4: Tests - Authenticated
-            describe ('Authenticated - Personal', () => {
+            describe('Authenticated - Personal', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.4.1: Set up authenticated elements
@@ -218,6 +219,10 @@ describe ('Build Acceptance Test', () => {
                         button_consent: {
                             id: translate(''),
                             identifier: translate('')
+                        },
+                        button_accept: {
+                            id: translate('authenticated_id_accept'),
+                            identifier: translate('authenticated_identifier_accept'),
                         }
                     };
                     AUTHENTICATED_HEADER_ELEMENTS = {
@@ -256,7 +261,7 @@ describe ('Build Acceptance Test', () => {
             })
 
             // 4.2.5: Tests - Login
-            describe ('Login - Demo', () => {
+            describe('Login - Demo', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
                 // 4.2.5.1: Test - Demo Login
@@ -270,7 +275,7 @@ describe ('Build Acceptance Test', () => {
             })
 
             // 4.2.6: Tests - Authenticated
-            describe ('Authenticated - Demo', () => {
+            describe('Authenticated - Demo', () => {
                 jest.setTimeout(TIMEOUT.S_THIRTY);
 
                 // 4.2.4.1: Test - Kick outs
@@ -300,19 +305,43 @@ describe ('Build Acceptance Test', () => {
                     await chromeDriver.get(course_target);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
                     // TODO
+                    await AUTHENTICATED_EN.testModal();
+                    await AUTHENTICATED_EN.testCourse();
+                    // TODO: Investigate, modal not closing
+                    await chromeDriver.sleep(TIMEOUT.S_FIVE);
                 });
 
-            });
-        });
+                // 4.2.4.3: Test - Mobile embedded links
+                test('BAT-WEB-010', async () => {
+                    // Resource 1
+                    const resource_1 = "https://homeweb.ca/summertime-and-your-health?embedded";
+                    await chromeDriver.get(resource_1);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    // await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_childcare);
 
-        // describe('Customer Portal', () => {
-        //     test('BAT-WEB-010', async () => {
-        //         // TODO: Customer Portal
-        //     })
-        //
-        //     test('BAT-WEB-011', async () => {
-        //         // TODO: Login
-        //     })
-        // })
+                    // Resource 2
+                    const resource_2 = "https://homeweb.ca/mental-health-benefits-of-exercise?embedded";
+                    await chromeDriver.get(resource_2);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    // await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_eldercare);
+
+                    // Resource 3
+                    const resource_3 = "https://homeweb.ca/summer-beauty-from-the-inside-out?embedded";
+                    await chromeDriver.get(resource_3);
+                    await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
+                    // await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_hra);
+                });
+            });
+
+            // describe('BAT-WEB-010', () => {
+            //     test('Mobile Links', async () => {
+            //     })
+            //
+            //     test('BAT-WEB-011', async () => {
+            //         // TODO: Customer Portal
+            //     })
+            // })
+        });
     });
 });
+
