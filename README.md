@@ -13,9 +13,25 @@ MDG 2026
 - Jest 30.2.0
 - TypeScript 5.9.3
 ---
-# Install Instruction
+
+# Set up
 1. In terminal, navigate to project root directory
 2. Run *yarn install*
+3. *mkdir logs*
+4. *touch CREDENTIALS.json*
+```
+CREDENTIALS.json template
+{
+	"personal": {
+		"email": "",
+		"password": ""
+	},
+	"demo": {
+		"email": "",
+		"password": ""
+	}
+}
+```
 
 ---
 # Test Suites
@@ -35,24 +51,9 @@ Status Legend
 ### 🔵 SMOKE TEST 🔵
 Pure TypeScript
 - *yarn smoke-legacy*
-### ⚪ SMOKE TEST ⚪
+### 🟡 SMOKE TEST 🟡
 - *yarn smoke*
-### 🟡 BUILD ACCEPTANCE TEST 🟡
-- *mkdir logs*
-- *touch CREDENTIALS.json*
-```
-CREDENTIALS.json template
-{
-	"personal": {
-		"email": "",
-		"password": ""
-	},
-	"demo": {
-		"email": "",
-		"password": ""
-	}
-}
-```
+### 🟢 BUILD ACCEPTANCE TEST 🟢
 - yarn bat
 ### ⚫ REGRESSION ⚫ 
 - TBD
