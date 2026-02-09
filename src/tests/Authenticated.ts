@@ -3,11 +3,11 @@
 /**
  * Imports
  */
+import { appendFile } from 'node:fs/promises';
 import { BaseTest } from './BaseTest';
-import { FIND, HOMEWEB_DOMAIN, ID, KNOWN_DOMAINS, LANGUAGE, LIFESTAGE_DOMAIN, LIFESTYLES_DOMAIN, QUANTUM_API_DOMAIN, SENTIO_DOMAIN, TAG, TIMEOUT } from '../common/Constants';
 import { By, until, WebDriver, WebElement } from 'selenium-webdriver';
 import { ElementType } from '../types/ElementType';
-import { appendFile } from 'node:fs/promises';
+import { HOMEWEB_DOMAIN, KNOWN_DOMAINS, LANGUAGE, TAG, TIMEOUT } from '../common/Constants';
 
 /**
  * Login - Tests
@@ -30,12 +30,10 @@ export class Authenticated extends BaseTest {
      */
     public async testButton(buttonElement: ElementType) {
         const { id, identifier, route } = buttonElement;
-        console.log(`Testing button: ${identifier}`);
         let button: WebElement;
         let url: URL;
 
         // 1: Find element
-
         button = await this.chromeDriver.findElement(By.linkText(identifier));
         // 2: Scroll to element
         await this.chromeDriver.executeScript(
@@ -76,36 +74,25 @@ export class Authenticated extends BaseTest {
                 // 4.3.2: Test - Fail | UNKNOWN Domain
                 throw new Error(`UNKNOWN ORIGIN: ${url.origin}`);
             }
-            // // 4.3.1: Check if domain is known
-            // switch (url.origin) {
-            //     // 4.3.1: Test - Pass | KNOWN Domain
-            //     case SENTIO_DOMAIN:
-            //     case LIFESTAGE_DOMAIN:
-            //     case LIFESTYLES_DOMAIN:
-            //     case QUANTUM_API_DOMAIN: 
-            //         const success_message = `${id}->success\n`;
-            //         await appendFile(this.logFilename, success_message);
-            //         break;
-            //     default:
-            //         // 4.3.2: Test - Fail | UNKNOWN Domain
-            //         throw new Error(`UNKNOWN ORIGIN: ${url.origin}`);
-            // }
         }
 
         // 5: Navigate back
         await this.chromeDriver.navigate().back();
     }// End of testButton()
-    
-    // TODO
+
+    /**
+     * Test: Modal
+     */
     public async testModal() {
         // 1: Find the button
         const button = await this.chromeDriver.findElement(
             By.css('button[data-bs-target="#resourceGate"]')
         );
 
-        expect(button).toBeTruthy();
-
         // 2: Click the button
+        await this.chromeDriver.sleep(TIMEOUT.S_HALF);
+        await this.chromeDriver.wait(until.elementIsVisible(button), TIMEOUT.S_FIVE);
+        await this.chromeDriver.wait(until.elementIsEnabled(button), TIMEOUT.S_FIVE);
         await button.click();
 
         // 3: Wait for modal to become visible
@@ -119,20 +106,22 @@ export class Authenticated extends BaseTest {
         // 4: Assert modal is displayed
         const isDisplayed = await modal.isDisplayed();
         expect(isDisplayed).toBe(true);
-    }
+    }// End of testModal()
 
-    // TODO
+    /**
+     * Test: Course
+     */
     public async testCourse() {
         // 1: Find the button
         const button = await this.chromeDriver.findElement(
             By.css('button[data-bs-dismiss="modal"]')
         );
 
-        expect(button).toBeTruthy();
-
         // 2: Click the button
+        await this.chromeDriver.sleep(TIMEOUT.S_HALF);
+        await this.chromeDriver.wait(until.elementIsVisible(button), TIMEOUT.S_FIVE);
+        await this.chromeDriver.wait(until.elementIsEnabled(button), TIMEOUT.S_FIVE);
         await button.click();
-
-    }
+    }// End of testCourse
 }// End of class
 // End of file
