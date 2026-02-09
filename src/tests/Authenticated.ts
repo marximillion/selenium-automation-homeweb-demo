@@ -4,10 +4,9 @@
  * Imports
  */
 import { BaseTest } from './BaseTest';
-import { HOMEWEB_DOMAIN, ID, LANGUAGE, LIFESTAGE_DOMAIN, LIFESTYLES_DOMAIN, SENTIO_DOMAIN, TAG, TIMEOUT } from '../common/Constants';
-import { By, until, WebDriver } from 'selenium-webdriver';
+import { FIND, HOMEWEB_DOMAIN, ID, KNOWN_DOMAINS, LANGUAGE, LIFESTAGE_DOMAIN, LIFESTYLES_DOMAIN, QUANTUM_API_DOMAIN, SENTIO_DOMAIN, TAG, TIMEOUT } from '../common/Constants';
+import { By, until, WebDriver, WebElement } from 'selenium-webdriver';
 import { ElementType } from '../types/ElementType';
-import { translate } from '../common/Utility';
 import { appendFile } from 'node:fs/promises';
 
 /**
@@ -30,12 +29,14 @@ export class Authenticated extends BaseTest {
      * @param buttonElement {ElementType}
      */
     public async testButton(buttonElement: ElementType) {
-        const {id, identifier, route} = buttonElement;
+        const { id, identifier, route } = buttonElement;
+        console.log(`Testing button: ${identifier}`);
+        let button: WebElement;
         let url: URL;
 
         // 1: Find element
-        const button = await this.chromeDriver.findElement(By.linkText(identifier))
 
+        button = await this.chromeDriver.findElement(By.linkText(identifier));
         // 2: Scroll to element
         await this.chromeDriver.executeScript(
             "arguments[0].scrollIntoView({ block: 'center', inline: 'center' });",
@@ -66,31 +67,71 @@ export class Authenticated extends BaseTest {
         }
         // 4.3: Domain Check - Other
         else {
-            switch (url.origin) {
-                // 4.3.1: Test - Pass | KNOWN Domain
-                case SENTIO_DOMAIN:
-                case LIFESTAGE_DOMAIN:
-                case LIFESTYLES_DOMAIN:
-                    const success_message = `${id}->success\n`;
-                    await appendFile(this.logFilename, success_message);
-                    break;
-                default:
+            // 4.3.1: Check if domain is known
+            if (KNOWN_DOMAINS.includes(url.origin)) {
+                // 4.3.1.1: Test - Pass | KNOWN Domain
+                const successMessage = `${id}->success\n`;
+                await appendFile(this.logFilename, successMessage);
+            } else {
                 // 4.3.2: Test - Fail | UNKNOWN Domain
                 throw new Error(`UNKNOWN ORIGIN: ${url.origin}`);
             }
+            // // 4.3.1: Check if domain is known
+            // switch (url.origin) {
+            //     // 4.3.1: Test - Pass | KNOWN Domain
+            //     case SENTIO_DOMAIN:
+            //     case LIFESTAGE_DOMAIN:
+            //     case LIFESTYLES_DOMAIN:
+            //     case QUANTUM_API_DOMAIN: 
+            //         const success_message = `${id}->success\n`;
+            //         await appendFile(this.logFilename, success_message);
+            //         break;
+            //     default:
+            //         // 4.3.2: Test - Fail | UNKNOWN Domain
+            //         throw new Error(`UNKNOWN ORIGIN: ${url.origin}`);
+            // }
         }
 
         // 5: Navigate back
         await this.chromeDriver.navigate().back();
     }// End of testButton()
-
+    
     // TODO
-    public async testModal () {
+    public async testModal() {
+        // 1: Find the button
+        const button = await this.chromeDriver.findElement(
+            By.css('button[data-bs-target="#resourceGate"]')
+        );
 
+        expect(button).toBeTruthy();
+
+        // 2: Click the button
+        await button.click();
+
+        // 3: Wait for modal to become visible
+        const modal = await this.chromeDriver.wait(
+            until.elementLocated(By.id("resourceGate")),
+            5000
+        );
+        this.chromeDriver
+        await this.chromeDriver.wait(until.elementIsVisible(modal), 5000);
+
+        // 4: Assert modal is displayed
+        const isDisplayed = await modal.isDisplayed();
+        expect(isDisplayed).toBe(true);
     }
 
     // TODO
-    public async testCourse () {
+    public async testCourse() {
+        // 1: Find the button
+        const button = await this.chromeDriver.findElement(
+            By.css('button[data-bs-dismiss="modal"]')
+        );
+
+        expect(button).toBeTruthy();
+
+        // 2: Click the button
+        await button.click();
 
     }
 }// End of class

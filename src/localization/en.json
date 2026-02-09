@@ -57,6 +57,7 @@
   "bat_id_logout": "BAT-WEB-EN-006",
   "bat_id_login_demo": "BAT-WEB-EN-007",
   "bat_id_kickouts": "BAT-WEB-EN-008",
+  "bat_id_course": "BAT-WEB-EN-009",
 
   "login_id_email": "LOGIN-EN-001",
   "login_id_password": "LOGIN-EN-002",
@@ -71,8 +72,10 @@
   "authenticated_id_access_childcare": "AUTH-EN-002",
   "authenticated_id_access_eldercare": "AUTH-EN-003",
   "authenticated_id_access_hra": "AUTH-EN-004",
+  "authenticated_id_accept": "AUTH-EN-006",
   "authenticated_identifier_access_sentio": "Access Sentio",
   "authenticated_identifier_access_childcare": "Access Childcare Resource Locator by LifestageCare",
   "authenticated_identifier_access_eldercare": "Access Eldercare Resource Locator by LifestageCare",
-  "authenticated_identifier_access_hra": "Access Health Risk Assessment"
+  "authenticated_identifier_access_hra": "Access Health Risk Assessment",
+  "authenticated_identifier_accept": "button[data-bs-dismiss=\"modal\"]"
 }
