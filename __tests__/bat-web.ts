@@ -3,16 +3,16 @@
 /**
  * Imports
  */
+import { Authenticated } from '../src/tests/Authenticated';
 import { Browser, Builder, By, until, WebDriver } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
-import { personal, demo } from '../CREDENTIALS.json';
-import { FIND, HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, ID, LANGUAGE, TAG, TIMEOUT } from '../src/common/Constants';
-import { PublicLanding } from '../src/tests/PublicLanding';
+import { CUSTOMER_PORTAL_URL, FIND, HOMEWEB_LANDING_URL_EN, HOMEWEB_LANDING_URL_FR, ID, LANGUAGE, TAG, TIMEOUT } from '../src/common/Constants';
 import { ElementType } from '../src/types/ElementType';
-import { translate } from '../src/common/Utility';
-import { Login } from '../src/Login';
-import { Authenticated } from '../src/tests/Authenticated';
 import { Header } from '../src/tests/Header';
+import { Login } from '../src/Login';
+import { personal, demo } from '../CREDENTIALS.json';
+import { PublicLanding } from '../src/tests/PublicLanding';
+import { translate } from '../src/common/Utility';
 
 /**
  * Interfaces
@@ -40,13 +40,17 @@ interface AuthenticatedElements {
     button_access_childcare: ElementType;
     button_access_eldercare: ElementType;
     button_access_hra: ElementType;
-    button_consent: ElementType;
-    button_accept: ElementType;
 }
 
 interface AuthenticatedHeaderElements {
     button_menu: ElementType
     button_logout: ElementType;
+}
+
+interface CustomerPortalHeaderElements {
+    insight_monthly_registrations: ElementType;
+    insight_eq_dashboard: ElementType;
+    insight_ahs: ElementType;
 }
 
 /**
@@ -55,7 +59,7 @@ interface AuthenticatedHeaderElements {
 describe('Build Acceptance Test', () => {
     jest.setTimeout(TIMEOUT.M_FIVE);
 
-    // 1: Declare variables
+    // 1: Initialize variables
     let chromeDriver: WebDriver;
     let options: chrome.Options
     let window: string;
@@ -74,77 +78,127 @@ describe('Build Acceptance Test', () => {
     let AUTHENTICATED_HEADER_EN: Header;
     let AUTHENTICATED_HEADER_ELEMENTS: AuthenticatedHeaderElements;
 
-    // 2: Runs once BEFORE ALL tests
-    beforeAll(async () => {
-        // 2.1: Set up browser
-        options = new chrome.Options();
-        options.addArguments(
-            '--incognito',
-            // '--start-maximized',
-        );
-        chromeDriver = new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
-        window = await chromeDriver.getWindowHandle();
-    });
+    let CUSTOMER_PORTAL_HEADER_EN: Header;
+    let CUSTOMER_PORTAL_HEADER_ELEMENTS: CustomerPortalHeaderElements;
 
-    // 3: Runs once AFTER ALL tests
-    afterAll(async () => {
-        await chromeDriver.quit();
-    });
-
-    // 4: Tests - English
+    // 2: Tests - English
     describe('EN', () => {
-        // 4.1: Initialize variables
-        beforeAll(() => {
-            target = HOMEWEB_LANDING_URL_EN;
-            locale = LANGUAGE.ENGLISH;
-        });
-
-        // 4.2: Tests - Homeweb
+        // 2.1: Tests - Homeweb
         describe('Homeweb', () => {
-            // 4.2.1: Test - Navigate to Homeweb Landing page
+            // 2.1.1: Set up, runs once BEFORE ALL Homeweb tests
+            beforeAll(async () => {
+                target = HOMEWEB_LANDING_URL_EN;
+                locale = LANGUAGE.ENGLISH;
+
+                options = new chrome.Options();
+                options.addArguments(
+                    '--incognito',
+                    // '--start-maximized',
+                );
+                chromeDriver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
+                window = await chromeDriver.getWindowHandle();
+
+                PUBLIC_LANDING_EN = new PublicLanding(locale, chromeDriver, target, window);
+                PUBLIC_LANDING_ELEMENTS = {
+                    resource_neurodiversity: {
+                        id: translate('public_landing_id_resource_1'),
+                        identifier: translate('public_landing_identifier_resource_1'),
+                        route: translate('public_landing_route_resource_1')
+                    },
+                    resource_emotional_intelligence: {
+                        id: translate('public_landing_id_resource_2'),
+                        identifier: translate('public_landing_identifier_resource_2'),
+                        route: translate('public_landing_route_resource_2')
+                    },
+                    resource_anxiety: {
+                        id: translate('public_landing_id_resource_3'),
+                        identifier: translate('public_landing_identifier_resource_3'),
+                        route: translate('public_landing_route_resource_3')
+                    },
+                    resource_toolkit: {
+                        id: translate('public_landing_id_toolkit'),
+                        identifier: translate('public_landing_identifier_toolkit'),
+                        route: translate('public_landing_route_toolkit')
+                    },
+                    button_sign_in: {
+                        id: translate('public_landing_id_sign_in'),
+                        identifier: translate('public_landing_identifier_sign_in'),
+                        route: translate('public_landing_route_sign_in')
+                    }
+                };
+
+                LOGIN_EN = new Login(locale, chromeDriver, target, window);
+                LOGIN_ELEMENTS = {
+                    input_email: {
+                        id: translate('login_id_email'),
+                        identifier: ID.EMAIL,
+                    },
+                    input_password: {
+                        id: translate('login_id_password'),
+                        identifier: ID.PASSWORD,
+                    },
+                    button_next: {
+                        id: translate('login_id_next'),
+                        identifier: translate('login_identifier_button'),
+                    },
+                    button_sign_in: {
+                        id: translate('login_id_sign_in'),
+                        identifier: translate('login_identifier_button'),
+                        route: translate('login_sign_in_route')
+                    }
+                };
+
+                AUTHENTICATED_EN = new Authenticated(locale, chromeDriver, target, window);
+                AUTHENTICATED_ELEMENTS = {
+                    button_access_sentio: {
+                        id: translate('authenticated_id_access_sentio'),
+                        identifier: translate('authenticated_identifier_access_sentio'),
+                    },
+                    button_access_childcare: {
+                        id: translate('authenticated_id_access_childcare'),
+                        identifier: translate('authenticated_identifier_access_childcare'),
+                    },
+                    button_access_eldercare: {
+                        id: translate('authenticated_id_access_eldercare'),
+                        identifier: translate('authenticated_identifier_access_eldercare'),
+                    },
+                    button_access_hra: {
+                        id: translate('authenticated_id_access_hra'),
+                        identifier: translate('authenticated_identifier_access_hra'),
+                    }
+                };
+
+                AUTHENTICATED_HEADER_EN = new Header(locale, chromeDriver, target, window);
+                AUTHENTICATED_HEADER_ELEMENTS = {
+                    button_menu: {
+                        id: translate('header_id_menu'),
+                        identifier: translate('header_identifier_menu')
+                    },
+                    button_logout: {
+                        id: translate('header_id_logout'),
+                        identifier: translate('header_identifier_logout'),
+                        route: translate('header_route_logout')
+                    }
+                };
+            });
+
+            // 2.1.3: Quit browser, runs once AFTER ALL Homeweb tests
+            afterAll(async () => {
+                await chromeDriver.quit();
+            });
+
+            // 2.1.4: Test - Navigate to Homeweb Landing page
             test(translate('bat_id_navigate'), async () => {
                 await chromeDriver.get(target);
                 window = await chromeDriver.getWindowHandle();
                 await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)))
             });
 
-            // 4.2.2: Tests - Public Landing
+            // 2.1.5: Tests - Public Landing
             describe('Public Landing', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
-                // 4.2.2.1: Set up public landing page elements
-                beforeAll(() => {
-                    PUBLIC_LANDING_EN = new PublicLanding(locale, chromeDriver, target, window);
-                    PUBLIC_LANDING_ELEMENTS = {
-                        resource_neurodiversity: {
-                            id: translate('public_landing_id_resource_1'),
-                            identifier: translate('public_landing_identifier_resource_1'),
-                            route: translate('public_landing_route_resource_1')
-                        },
-                        resource_emotional_intelligence: {
-                            id: translate('public_landing_id_resource_2'),
-                            identifier: translate('public_landing_identifier_resource_2'),
-                            route: translate('public_landing_route_resource_2')
-                        },
-                        resource_anxiety: {
-                            id: translate('public_landing_id_resource_3'),
-                            identifier: translate('public_landing_identifier_resource_3'),
-                            route: translate('public_landing_route_resource_3')
-                        },
-                        resource_toolkit: {
-                            id: translate('public_landing_id_toolkit'),
-                            identifier: translate('public_landing_identifier_toolkit'),
-                            route: translate('public_landing_route_toolkit')
-                        },
-                        button_sign_in: {
-                            id: translate('public_landing_id_sign_in'),
-                            identifier: translate('public_landing_identifier_sign_in'),
-                            route: translate('public_landing_route_sign_in')
-                        }
-                    };
-                });
-
-                // 4.2.2.2: Test - Resources
+                // 3.1.5.1: Test - Resources
                 test(translate('bat_id_resources'), async () => {
                     await PUBLIC_LANDING_EN.testResource(PUBLIC_LANDING_ELEMENTS.resource_neurodiversity, FIND.CSS);
                     await PUBLIC_LANDING_EN.testResource(PUBLIC_LANDING_ELEMENTS.resource_emotional_intelligence, FIND.CSS);
@@ -153,35 +207,11 @@ describe('Build Acceptance Test', () => {
                 });
             });
 
-            // 4.2.3: Tests - Login
+            // 2.1.6: Tests - Login
             describe('Login - Personal', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
-                // 4.2.3.1: Set up login page elements
-                beforeAll(() => {
-                    LOGIN_EN = new Login(locale, chromeDriver, target, window);
-                    LOGIN_ELEMENTS = {
-                        input_email: {
-                            id: translate('login_id_email'),
-                            identifier: ID.EMAIL,
-                        },
-                        input_password: {
-                            id: translate('login_id_password'),
-                            identifier: ID.PASSWORD,
-                        },
-                        button_next: {
-                            id: translate('login_id_next'),
-                            identifier: translate('login_identifier_button'),
-                        },
-                        button_sign_in: {
-                            id: translate('login_id_sign_in'),
-                            identifier: translate('login_identifier_button'),
-                            route: translate('login_sign_in_route')
-                        }
-                    }
-                });
-
-                // 4.2.2.2: Test - Personal Login
+                // 3.1.6.1: Test - Personal Login
                 test(translate('bat_id_login_personal'), async () => {
                     await PUBLIC_LANDING_EN.testButton(PUBLIC_LANDING_ELEMENTS.button_sign_in);
                     await LOGIN_EN.testInput(LOGIN_ELEMENTS.input_email, personal.email);
@@ -191,61 +221,18 @@ describe('Build Acceptance Test', () => {
                 })
             })
 
-            // 4.2.4: Tests - Authenticated
+            // 2.1.7: Tests - Authenticated
             describe('Authenticated - Personal', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
-                // 4.2.4.1: Set up authenticated elements
-                beforeAll(() => {
-                    AUTHENTICATED_EN = new Authenticated(locale, chromeDriver, target, window);
-                    AUTHENTICATED_HEADER_EN = new Header(locale, chromeDriver, target, window);
-                    AUTHENTICATED_ELEMENTS = {
-                        button_access_sentio: {
-                            id: translate('authenticated_id_access_sentio'),
-                            identifier: translate('authenticated_identifier_access_sentio'),
-                        },
-                        button_access_childcare: {
-                            id: translate('authenticated_id_access_childcare'),
-                            identifier: translate('authenticated_identifier_access_childcare'),
-                        },
-                        button_access_eldercare: {
-                            id: translate('authenticated_id_access_eldercare'),
-                            identifier: translate('authenticated_identifier_access_eldercare'),
-                        },
-                        button_access_hra: {
-                            id: translate('authenticated_id_access_hra'),
-                            identifier: translate('authenticated_identifier_access_hra'),
-                        },
-                        button_consent: {
-                            id: translate(''),
-                            identifier: translate('')
-                        },
-                        button_accept: {
-                            id: translate('authenticated_id_accept'),
-                            identifier: translate('authenticated_identifier_accept'),
-                        }
-                    };
-                    AUTHENTICATED_HEADER_ELEMENTS = {
-                        button_menu: {
-                            id: translate('header_id_menu'),
-                            identifier: translate('header_identifier_menu')
-                        },
-                        button_logout: {
-                            id: translate('header_id_logout'),
-                            identifier: translate('header_identifier_logout'),
-                            route: translate('header_route_logout')
-                        }
-                    }
-                });
-
-                // 4.2.4.1: Test - Resource
+                // 2.1.7.1: Test - Resource
                 test(translate('bat_id_authenticated_resource'), async () => {
                     const resource_target = "https://homeweb.ca/user/articles/56252b81e40e6f50062aa714";
                     await chromeDriver.get(resource_target);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
                 });
 
-                // 4.2.4.2: Test - Sentio kick out
+                // 2.1.7.2: Test - Sentio kick out
                 test(translate('bat_id_sentio'), async () => {
                     const sentio_resource_target = "https://homeweb.ca/app/en/resources/62c5a1e929ed9c1608d0434b";
                     await chromeDriver.get(sentio_resource_target);
@@ -253,18 +240,18 @@ describe('Build Acceptance Test', () => {
                     await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_sentio);
                 });
 
-                // 4.2.4.3: Test - Logout
+                // 2.1.7.3: Test - Logout
                 test(translate('bat_id_logout'), async () => {
                     await AUTHENTICATED_HEADER_EN.testMenu(AUTHENTICATED_HEADER_ELEMENTS.button_menu);
                     await AUTHENTICATED_HEADER_EN.testLogout(AUTHENTICATED_HEADER_ELEMENTS.button_logout);
                 });
             })
 
-            // 4.2.5: Tests - Login
+            // 2.1.8: Tests - Login
             describe('Login - Demo', () => {
                 jest.setTimeout(TIMEOUT.S_FIFTEEN);
 
-                // 4.2.5.1: Test - Demo Login
+                // 2.1.8.1: Test - Demo Login
                 test(translate('bat_id_login_demo'), async () => {
                     await PUBLIC_LANDING_EN.testButton(PUBLIC_LANDING_ELEMENTS.button_sign_in);
                     await LOGIN_EN.testInput(LOGIN_ELEMENTS.input_email, demo.email);
@@ -274,11 +261,11 @@ describe('Build Acceptance Test', () => {
                 })
             })
 
-            // 4.2.6: Tests - Authenticated
+            // 2.1.9: Tests - Authenticated
             describe('Authenticated - Demo', () => {
-                jest.setTimeout(TIMEOUT.S_THIRTY);
+                jest.setTimeout(TIMEOUT.M_ONE);
 
-                // 4.2.4.1: Test - Kick outs
+                // 3.1.9.1: Test - Kick outs
                 test(translate('bat_id_kickouts'), async () => {
                     // Child Care
                     const childcare_resource_target = "https://homeweb.ca/app/en/resources/579ba4db88db7af01fe6ddd4";
@@ -299,49 +286,113 @@ describe('Build Acceptance Test', () => {
                     await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_hra);
                 });
 
-                // 4.2.4.2: Test - Course Consent
+                // 2.1.9.2: Test - Course Consent
                 test(translate('bat_id_course'), async () => {
                     const course_target = "https://homeweb.ca/app/en/resources/564a36083392100756dd3e32";
                     await chromeDriver.get(course_target);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                    // TODO
                     await AUTHENTICATED_EN.testModal();
                     await AUTHENTICATED_EN.testCourse();
                     // TODO: Investigate, modal not closing
-                    await chromeDriver.sleep(TIMEOUT.S_FIVE);
                 });
 
-                // 4.2.4.3: Test - Mobile embedded links
-                test('BAT-WEB-010', async () => {
+                // 2.1.9.3: Test - Embedded mobile links
+                test(translate('bat_id_embedded'), async () => {
                     // Resource 1
                     const resource_1 = "https://homeweb.ca/summertime-and-your-health?embedded";
                     await chromeDriver.get(resource_1);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                    // await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_childcare);
 
                     // Resource 2
                     const resource_2 = "https://homeweb.ca/mental-health-benefits-of-exercise?embedded";
                     await chromeDriver.get(resource_2);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                    // await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_eldercare);
 
                     // Resource 3
                     const resource_3 = "https://homeweb.ca/summer-beauty-from-the-inside-out?embedded";
                     await chromeDriver.get(resource_3);
                     await chromeDriver.wait(until.elementLocated(By.id(ID.CONTENT)));
-                    // await AUTHENTICATED_EN.testButton(AUTHENTICATED_ELEMENTS.button_access_hra);
+                    await chromeDriver.sleep(TIMEOUT.S_ONE)
                 });
             });
+        });// End of Homeweb Tests
 
-            // describe('BAT-WEB-010', () => {
-            //     test('Mobile Links', async () => {
-            //     })
-            //
-            //     test('BAT-WEB-011', async () => {
-            //         // TODO: Customer Portal
-            //     })
-            // })
-        });
-    });
-});
+        // 2.2: Tests - Customer Portal
+        describe('Customer Portal', () => {
+            // 3.2.1: Set up, runs once BEFORE ALL Customer Portal tests
+            beforeAll(async () =>
+            {
+                target = CUSTOMER_PORTAL_URL;
+                locale = LANGUAGE.ENGLISH;
+
+                options = new chrome.Options();
+                options.addArguments(
+                    '--incognito',
+                    // '--start-maximized',
+                );
+                chromeDriver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
+                window = await chromeDriver.getWindowHandle();
+
+                LOGIN_EN = new Login(locale, chromeDriver, target, window);
+                LOGIN_ELEMENTS = {
+                    input_email: {
+                        id: translate('login_id_email'),
+                        identifier: ID.EMAIL,
+                    },
+                    input_password: {
+                        id: translate('login_id_password'),
+                        identifier: ID.PASSWORD,
+                    },
+                    button_next: {
+                        id: translate('login_id_next'),
+                        identifier: translate('login_identifier_button'),
+                    },
+                    button_sign_in: {
+                        id: translate('login_id_sign_in'),
+                        identifier: translate('login_identifier_button'),
+                        route: translate('login_sign_in_route')
+                    }
+                };
+
+                CUSTOMER_PORTAL_HEADER_EN = new Header(locale, chromeDriver, target, window);
+                CUSTOMER_PORTAL_HEADER_ELEMENTS = {
+                    insight_monthly_registrations: {
+                        id: translate('customer_portal_id_insight_monthly_registrations'),
+                        identifier: translate('customer_portal_identifier_insight_monthly_registrations')
+                    },
+                    insight_eq_dashboard: {
+                        id: translate('customer_portal_id_insight_eq_dashboard'),
+                        identifier: translate('customer_portal_identifier_insight_eq_dashboard')
+                    },
+                    insight_ahs: {
+                        id: translate('customer_portal_id_insight_ahs'),
+                        identifier: translate('customer_portal_identifier_insight_ahs')
+                    }
+                }
+            })
+
+            // 3.2.2: Quit browser, runs once AFTER ALL Customer Portal tests
+            afterAll(async () => {
+                await chromeDriver.quit();
+            });
+
+            // 3.2.3: Test - Customer Portal Insights
+            test(translate('bat_id_customer_portal'), async () => {
+                // 3.2.3.1: Navigate to customer portal
+                await chromeDriver.get(target);
+
+                // 3.2.3.2: Login
+                await LOGIN_EN.testInput(LOGIN_ELEMENTS.input_email, personal.email);
+                await LOGIN_EN.testButton(LOGIN_ELEMENTS.button_next);
+                await LOGIN_EN.testInput(LOGIN_ELEMENTS.input_password, personal.password);
+                await LOGIN_EN.testButton(LOGIN_ELEMENTS.button_sign_in);
+
+                // 3.2.3.3: Test - Insights
+                await CUSTOMER_PORTAL_HEADER_EN.testInsight(CUSTOMER_PORTAL_HEADER_ELEMENTS.insight_monthly_registrations);
+                await CUSTOMER_PORTAL_HEADER_EN.testInsight(CUSTOMER_PORTAL_HEADER_ELEMENTS.insight_eq_dashboard);
+                await CUSTOMER_PORTAL_HEADER_EN.testInsight(CUSTOMER_PORTAL_HEADER_ELEMENTS.insight_ahs);
+            });
+        });// End of Customer Portal Tests
+    });// End of EN Tests
+});// End of Build Acceptance Test
 
